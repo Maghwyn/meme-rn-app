@@ -1,0 +1,30 @@
+name: Semantic Release
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  automatic_version_release:
+    name: Automatic Version Release
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Setup Node.js v20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Node.js Dependencies
+        run: yarn install --frozen-lockfile
+      - name: Semantic Release
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
