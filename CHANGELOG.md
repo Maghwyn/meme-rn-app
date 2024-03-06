@@ -1,3 +1,12 @@
+# [1.0.0-dev.2](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.1...v1.0.0-dev.2) (2024-03-06)
+
+
+### Features
+
+* **babel:** Implement path module resolver ([01081b0](https://github.com/Maghwyn/meme-rn-app/commit/01081b03d1b29296715d973f32fa9306885d506a))
+* **redux:** Couple asyncstorage and redux to save the data persistently when closing the app ([e1494ff](https://github.com/Maghwyn/meme-rn-app/commit/e1494ff543a2447c636d03cae2775d4ea71c1a57))
+* **redux:** Initialize redux with the auth and user store + write a comment exampleon how to use redux ([4bab03d](https://github.com/Maghwyn/meme-rn-app/commit/4bab03dd759be1f341e31dec3c38138b289393c5))
+
 # 1.0.0-dev.1 (2024-03-06)
 
 
