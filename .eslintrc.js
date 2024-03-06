@@ -2,7 +2,10 @@ const path = require('path');
 
 module.exports = {
 	// Configuration for JavaScript files
-	extends: ['@react-native-community', 'plugin:prettier/recommended'],
+	extends: [
+		'@react-native-community',
+		'plugin:prettier/recommended'
+	],
 	plugins: ['unicorn'],
 	rules: {
 		'prettier/prettier': [
@@ -39,13 +42,6 @@ module.exports = {
 				project: './tsconfig.json',
 			},
 			rules: {
-				'prettier/prettier': [
-					'error',
-					{
-						singleQuote: true,
-						endOfLine: 'auto',
-					},
-				],
 				'max-params': ['error', 3], // Limit the number of parameters in a function to use object instead
 				'max-lines-per-function': ['error', 70],
 				'react/destructuring-assignment': 'off', // Vscode doesn't support automatically destructuring, it's a pain to add a new variable
