@@ -3,7 +3,6 @@ const path = require('path');
 module.exports = {
 	// Configuration for JavaScript files
 	extends: ['@react-native-community', 'plugin:prettier/recommended'],
-	plugins: ['unicorn'],
 	rules: {
 		'prettier/prettier': [
 			'error',
@@ -12,24 +11,12 @@ module.exports = {
 				endOfLine: 'auto',
 			},
 		],
-			'unicorn/filename-case': [
-			'error',
-			{
-				case: 'kebabCase',
-				ignore: ['/android', '/ios'],
-			},
-		],
 	},
 	overrides: [
 		// Configuration for TypeScript files
 		{
 			files: ['**/*.ts', '**/*.tsx', '**/*.js'],
-			plugins: [
-				'@typescript-eslint',
-				'unused-imports',
-				'tailwindcss',
-				'simple-import-sort',
-			],
+			plugins: ['@typescript-eslint', 'unused-imports', 'tailwindcss', 'simple-import-sort'],
 			extends: [
 				'plugin:tailwindcss/recommended',
 				'@react-native-community',
