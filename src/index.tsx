@@ -9,6 +9,31 @@ import VerificationScreen from './screens/auth/VerificationScreen';
 import FeedScreen from './screens/feed/feedScreen';
 
 const Stack = createStackNavigator();
+/*
+
+// TODO: To initialize the store, you need to call :
+const { store, persistor } = setupStore();
+<Provider store={store}>
+	<PersistGate loading={<Text>Loading...</Text>} persistor={persistor}>
+		<View></View>
+	</PersistGate>
+</Provider>
+
+// TODO: To retrieve the data :
+import { useAppSelector } from '@hooks/redux';
+import { retrieveUsername } from '@store/reducers/userSlice';
+const username = useAppSelector(retrieveUsername);
+
+// TODO: To dispatch the data :
+import { useAppDispatch } from '@hooks/redux';
+import { setUsername } from '@store/reducers/userSlice';
+const dispatch = useAppDispatch();
+dispatch(serUsername("bob"));
+*/
+
+// type SectionProps = PropsWithChildren<{
+// 	title: string;
+// }>;
 
 const App: React.FC = () => {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);

@@ -38,7 +38,11 @@
 		"paths": {
 			"@api/*": ["src/api/*"],
 			"@core/*": ["src/core/*"],
-			"@store/*": ["src/store/*"]
+			"@store/*": ["src/store/*"],
+			"@hooks/*": ["src/hooks/*"],
+			"@i18n": ["src/i18n"],
+			"@screens": ["src/screens"],
+			"@ui": ["src/ui"]
 		}
 	}
 }
