@@ -2,11 +2,7 @@ const path = require('path');
 
 module.exports = {
 	// Configuration for JavaScript files
-	extends: [
-		'@react-native-community',
-		'plugin:prettier/recommended'
-	],
-	plugins: ['unicorn'],
+	extends: ['@react-native-community', 'plugin:prettier/recommended'],
 	rules: {
 		'prettier/prettier': [
 			'error',
@@ -15,24 +11,12 @@ module.exports = {
 				endOfLine: 'auto',
 			},
 		],
-			'unicorn/filename-case': [
-			'error',
-			{
-				case: 'kebabCase',
-				ignore: ['/android', '/ios'],
-			},
-		],
 	},
 	overrides: [
 		// Configuration for TypeScript files
 		{
 			files: ['**/*.ts', '**/*.tsx', '**/*.js'],
-			plugins: [
-				'@typescript-eslint',
-				'unused-imports',
-				'tailwindcss',
-				'simple-import-sort',
-			],
+			plugins: ['@typescript-eslint', 'unused-imports', 'tailwindcss', 'simple-import-sort'],
 			extends: [
 				'plugin:tailwindcss/recommended',
 				'@react-native-community',
@@ -42,6 +26,13 @@ module.exports = {
 				project: './tsconfig.json',
 			},
 			rules: {
+				'prettier/prettier': [
+					'error',
+					{
+						singleQuote: true,
+						endOfLine: 'auto',
+					},
+				],
 				'max-params': ['error', 3], // Limit the number of parameters in a function to use object instead
 				'max-lines-per-function': ['error', 70],
 				'react/destructuring-assignment': 'off', // Vscode doesn't support automatically destructuring, it's a pain to add a new variable
