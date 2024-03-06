@@ -24,6 +24,28 @@ import {
 	ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+/*
+
+// TODO: To initialize the store, you need to call :
+const { store, persistor } = setupStore();
+<Provider store={store}>
+	<PersistGate loading={<Text>Loading...</Text>} persistor={persistor}>
+		<View></View>
+	</PersistGate>
+</Provider>
+
+// TODO: To retrieve the data :
+import { useAppSelector } from '@hooks/redux';
+import { retrieveUsername } from '@store/reducers/userSlice';
+const username = useAppSelector(retrieveUsername);
+
+// TODO: To dispatch the data :
+import { useAppDispatch } from '@hooks/redux';
+import { setUsername } from '@store/reducers/userSlice';
+const dispatch = useAppDispatch();
+dispatch(serUsername("bob"));
+*/
+
 type SectionProps = PropsWithChildren<{
 	title: string;
 }>;
