@@ -1,3 +1,4 @@
+import { loginUser } from '@api/auth.req';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState } from 'react';
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
@@ -16,11 +17,13 @@ const LoginScreen: LoginScreen = ({ navigation }) => {
 
 	const handleLogin = async () => {
 		try {
-			//connexion a l'api
-			await AsyncStorage.setItem('token', 'le token recu');
-			navigation.navigate('Feed');
+			const res = await loginUser({ email, password });
+			if (res.status === 200) {
+				await AsyncStorage.setItem('token', res.data);
+				navigation.navigate('Feed');
+			}
 		} catch (error) {
-			console.error('Erreur de connexion : ', error);
+			console.log(error);
 		}
 	};
 
