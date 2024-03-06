@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: 20
       - name: Install Node.js Dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --frozen-lockfile --ignore-scripts
       - name: Semantic Release
         run: npx semantic-release
         env:
