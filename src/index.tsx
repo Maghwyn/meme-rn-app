@@ -27,8 +27,12 @@ import {
 /*
 
 // TODO: To initialize the store, you need to call :
-const store = setupStore();
-<Provider store={store}><View></View></Provider>
+const { store, persistor } = setupStore();
+<Provider store={store}>
+	<PersistGate loading={<Text>Loading...</Text>} persistor={persistor}>
+		<View></View>
+	</PersistGate>
+</Provider>
 
 // TODO: To retrieve the data :
 import { useAppSelector } from '@hooks/redux';
