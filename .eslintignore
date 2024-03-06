@@ -10,7 +10,7 @@
 .prettierc
 .watchmanconfig
 app.json
-bable.config.js
+babel.config.js
 commitlint.config.js
 env.js
 Gemfile
