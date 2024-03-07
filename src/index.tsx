@@ -15,6 +15,8 @@ import SignupScreen from './screens/auth/SignupScreen';
 import VerificationScreen from './screens/auth/VerificationScreen';
 import FeedScreen from './screens/feed/feedScreen';
 
+const { store, persistor } = setupStore();
+
 const Stack = createStackNavigator();
 /*
 
@@ -38,9 +40,7 @@ const dispatch = useAppDispatch();
 dispatch(serUsername("bob"));
 */
 
-const App: React.FC = () => {
-	const { store, persistor } = setupStore();
-
+const App = () => {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const dispatch = useAppDispatch();
 
@@ -61,33 +61,39 @@ const App: React.FC = () => {
 	});
 
 	return (
+		<NavigationContainer>
+			<Stack.Navigator
+				initialRouteName={isLoggedIn ? 'Feed' : 'Login'}
+				screenOptions={{ headerShown: false }}
+			>
+				{isLoggedIn ? (
+					<Stack.Screen
+						name="Feed"
+						component={FeedScreen}
+						options={{
+							gestureEnabled: false,
+						}}
+					/>
+				) : (
+					<>
+						<Stack.Screen name="Login" component={LoginScreen} />
+						<Stack.Screen name="Signup" component={SignupScreen} />
+						<Stack.Screen name="Verification" component={VerificationScreen} />
+					</>
+				)}
+			</Stack.Navigator>
+		</NavigationContainer>
+	);
+};
+
+const AppProvider = () => {
+	return (
 		<Provider store={store}>
 			<PersistGate loading={<Text>Loading ....</Text>} persistor={persistor}>
-				<NavigationContainer>
-					<Stack.Navigator
-						initialRouteName={isLoggedIn ? 'Feed' : 'Login'}
-						screenOptions={{ headerShown: false }}
-					>
-						{isLoggedIn ? (
-							<Stack.Screen
-								name="Feed"
-								component={FeedScreen}
-								options={{
-									gestureEnabled: false,
-								}}
-							/>
-						) : (
-							<>
-								<Stack.Screen name="Login" component={LoginScreen} />
-								<Stack.Screen name="Signup" component={SignupScreen} />
-								<Stack.Screen name="Verification" component={VerificationScreen} />
-							</>
-						)}
-					</Stack.Navigator>
-				</NavigationContainer>
+				<App />
 			</PersistGate>
 		</Provider>
 	);
 };
 
-export default App;
+export default AppProvider;
