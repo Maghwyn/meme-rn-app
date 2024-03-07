@@ -24,8 +24,8 @@ const LoginScreen: LoginScreen = ({ navigation }) => {
 			if (res.status === 200) {
 				dispatch(setToken(res.data));
 				dispatch(setAuthentication(true));
-				client.defaults.headers.post.Authorization = `Bearer ${res.data}`;
-				navigation.navigate('Feed');
+				client.defaults.headers.common.Authorization = `Bearer ${res.data}`;
+				navigation.navigate('TabBar');
 			}
 		} catch (error) {
 			console.log(error);

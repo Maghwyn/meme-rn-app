@@ -1,9 +1,9 @@
 // App.tsx
 import { client } from '@api/network/client';
-import { useAppSelector } from '@hooks/redux';
+import { useAppDispatch, useAppSelector } from '@hooks/redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { getToken, isAuth } from '@store/reducers/authSlice';
+import { getToken, isAuth, setAuthentication } from '@store/reducers/authSlice';
 import { setupStore } from '@store/store';
 import React, { useEffect } from 'react';
 import { Text } from 'react-native';
@@ -43,11 +43,19 @@ dispatch(serUsername("bob"));
 const App = () => {
 	const token = useAppSelector(getToken);
 	const isLoggedIn = useAppSelector(isAuth);
+	const dispatch = useAppDispatch();
+
+	console.log('token', token);
+	if (token) {
+		client.defaults.headers.common.Authorization = `Bearer ${token}`;
+	}
 
 	useEffect(() => {
 		const checkLoginStatus = async () => {
 			if (token) {
-				client.defaults.headers.post.Authorization = `Bearer ${token}`;
+				client.defaults.headers.common.Authorization = `Bearer ${token}`;
+			} else {
+				dispatch(setAuthentication(false));
 			}
 		};
 		checkLoginStatus();

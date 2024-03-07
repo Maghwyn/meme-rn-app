@@ -7,14 +7,14 @@ export type Meme = {
 	category: string;
 	upload: Upload;
 	comments: Array<Comment>;
-	updatedAt: Date;
-	createdAt: Date;
+	updatedAt: string;
+	createdAt: string;
 };
 
 export type Comment = {
 	username: string;
 	content: string;
-	createdAt: Date;
+	createdAt: string;
 };
 
 export type MemeSearchQuery = {

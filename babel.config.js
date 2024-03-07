@@ -27,8 +27,9 @@ module.exports = {
 					'@store': './src/store',
 					'@ui': './src/ui',
 					'@utils': './src/utils',
-				}
-			}
-		]
+				},
+			},
+		],
+		'react-native-reanimated/plugin',
 	],
 };
