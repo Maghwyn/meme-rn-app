@@ -1,6 +1,7 @@
-import { getUserById } from '@api/user.req';
+import { client } from '@api/network/client';
+import { getMe, getUserById } from '@api/user.req';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
-import { setAuthentication, setToken } from '@store/reducers/authSlice';
+import { getToken, setAuthentication, setToken } from '@store/reducers/authSlice';
 import { getAnotherUserId, retrieveUser, setUserData } from '@store/reducers/userSlice';
 import { AxiosError } from 'axios';
 import React, { useEffect, useState } from 'react';
@@ -24,11 +25,16 @@ const UserProfileScreen: UserProfileScreen = () => {
 	const userData = useAppSelector(retrieveUser);
 	const anotherUserId = useAppSelector(getAnotherUserId);
 	const [filter, setFilter] = useState<'memes' | 'likedMemes' | 'comments'>('memes');
+	const token = useAppSelector(getToken);
 
 	const logoutUser = () => {
 		dispatch(setToken(undefined));
 		dispatch(setAuthentication(false));
 	};
+
+	if (token) {
+		client.defaults.headers.common.Authorization = `Bearer ${token}`;
+	}
 
 	useEffect(() => {
 		const getUserByIdRequest = async (userIdParam: string) => {
@@ -46,9 +52,17 @@ const UserProfileScreen: UserProfileScreen = () => {
 		if (anotherUserId !== undefined) {
 			getUserByIdRequest(anotherUserId);
 		} else {
+			const getLoggedUserData = async () => {
+				client.defaults.headers.common.Authorization = `Bearer ${token}`;
+				const res = await getMe();
+				if (res.status === 200) {
+					dispatch(setUserData(res.data));
+				}
+			};
+			getLoggedUserData();
 			console.log(`c'est moi ${userData.value.username}`);
 		}
-	}, [anotherUserId, dispatch, userData.value.id, userData.value.username]);
+	}, [anotherUserId, dispatch, token, userData.value.id, userData.value.username]);
 
 	return (
 		<View style={styles.container}>
