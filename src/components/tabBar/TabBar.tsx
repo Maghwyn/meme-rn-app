@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import CreateMemeScreen from '@screens/meme/CreateMemeScreen';
-import UserProfileScreen from '@screens/profile/UserProfile';
+import UserProfileScreen from '@screens/profile/UserProfileScreen';
 import ProfileSvg from 'assets/profile';
 import React from 'react';
 
