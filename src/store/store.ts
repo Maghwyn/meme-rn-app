@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import authReducer from '@store/reducers/authSlice';
+import memesReducer from '@store/reducers/memesSlice';
 import userReducer from '@store/reducers/userSlice';
 import {
 	FLUSH,
@@ -16,6 +17,7 @@ import {
 const rootReducer = combineReducers({
 	auth: authReducer,
 	user: userReducer,
+	memes: memesReducer,
 });
 
 const persistConfig = {
