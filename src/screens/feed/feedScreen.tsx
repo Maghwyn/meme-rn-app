@@ -1,5 +1,5 @@
 import { createMemeComment, retrieveMemeList } from '@api/memes.req';
-import type { MemeSearchQuery } from '@api/memes.req.type';
+import type { Comment, MemeSearchQuery } from '@api/memes.req.type';
 import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
 import { retrieveMemes, setMemes } from '@store/reducers/memesSlice';
@@ -42,9 +42,13 @@ const FeedScreen: FeedScreen = () => {
 		setIsBottomSheetVisible(true);
 	};
 
-	const renderCommentItem = ({ item }: { item: string }) => (
+	const commentsToDisplay = memes.find((meme) => meme.id === currentPhotoId)?.comments || [];
+	console.log(commentsToDisplay);
+
+	const renderCommentItem = ({ item }: { item: Comment }) => (
 		<View style={styles.commentItem}>
-			<Text>{item}</Text>
+			<Text>{item.content}</Text>
+			<Text>{item.username}</Text>
 		</View>
 	);
 
@@ -59,7 +63,7 @@ const FeedScreen: FeedScreen = () => {
 	const handleCloseSheet = () => {
 		setIsBottomSheetVisible(false);
 	};
-	console.log(memes);
+
 	return (
 		<View style={{ flex: 1 }}>
 			<Swiper
@@ -96,11 +100,6 @@ const FeedScreen: FeedScreen = () => {
 					snapPoints={['25%', '50%', '75%', '100%']}
 				>
 					<View style={styles.bottomSheetContent}>
-						<BottomSheetFlatList
-							data={memes.find((meme) => meme.id === currentPhotoId)?.comments || []}
-							renderItem={renderCommentItem}
-							keyExtractor={(item, index) => index.toString()}
-						/>
 						<View style={styles.addCommentContainer}>
 							<TextInput
 								placeholder="Add a comment..."
@@ -115,6 +114,13 @@ const FeedScreen: FeedScreen = () => {
 						<TouchableOpacity onPress={handleCloseSheet} style={styles.closeButton}>
 							<Text style={styles.closeButtonText}>Close</Text>
 						</TouchableOpacity>
+						<View style={styles.addCommentContainer}>
+							<BottomSheetFlatList
+								data={commentsToDisplay}
+								renderItem={renderCommentItem}
+								keyExtractor={(item, index) => index.toString()}
+							/>
+						</View>
 					</View>
 				</BottomSheet>
 			)}
@@ -183,6 +189,8 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 1,
 		borderBottomColor: '#ddd',
 		padding: 8,
+		flexDirection: 'row',
+		justifyContent: 'space-between',
 	},
 	addCommentContainer: {
 		flexDirection: 'row',
@@ -214,6 +222,13 @@ const styles = StyleSheet.create({
 		color: 'white',
 		fontSize: 16,
 		fontWeight: 'bold',
+	},
+	bottomSheetMessage: {
+		backgroundColor: 'black',
+		flex: 1,
+		width: 100,
+		height: 100,
+		flexDirection: 'column',
 	},
 });
 
