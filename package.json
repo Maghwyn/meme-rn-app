@@ -12,6 +12,7 @@
 		"postinstall": "husky install && chmod +x .husky/pre-commit && chmod +x .husky/commit-msg"
 	},
 	"dependencies": {
+		"@gorhom/bottom-sheet": "^4.6.1",
 		"@react-native-async-storage/async-storage": "^1.22.3",
 		"@react-native-community/masked-view": "^0.1.11",
 		"@react-native-community/viewpager": "^5.0.11",

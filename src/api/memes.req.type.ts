@@ -9,8 +9,8 @@ export type Meme = {
 	upload: Upload; // TODO: Return pictureUrl instead
 	likes: Array<string>;
 	comments: Array<Comment>;
-	updatedAt: Date;
-	createdAt: Date;
+	updatedAt: string;
+	createdAt: string;
 };
 
 export type MemePreview = {
@@ -32,7 +32,7 @@ export type Comment = {
 	userId: string;
 	username: string;
 	content: string;
-	createdAt: Date;
+	createdAt: string;
 };
 
 export type MemeSearchQuery = {

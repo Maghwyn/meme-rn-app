@@ -1,25 +1,14 @@
-import React, { useState } from 'react';
-import {
-	Image,
-	KeyboardAvoidingView,
-	Platform,
-	ScrollView,
-	StyleSheet,
-	Text,
-	TextInput,
-	TouchableOpacity,
-	View,
-} from 'react-native';
-import Modal from 'react-native-modal';
+import { createMemeComment, retrieveMemeList } from '@api/memes.req';
+import type { MemeSearchQuery } from '@api/memes.req.type';
+import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
+import { useAppDispatch, useAppSelector } from '@hooks/redux';
+import { retrieveMemes, setMemes } from '@store/reducers/memesSlice';
+import React, { useEffect, useRef, useState } from 'react';
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Swiper from 'react-native-swiper';
 
 interface FeedScreenProps {
 	navigation: any;
-}
-
-interface Photo {
-	id: string;
-	source: any;
 }
 
 export type FeedScreen = {
@@ -27,217 +16,204 @@ export type FeedScreen = {
 };
 
 const FeedScreen: FeedScreen = () => {
-	const [commentsVisible, setCommentsVisible] = useState(false);
-	const [comments, setComments] = useState<{ [id: string]: string[] }>({});
 	const [newComment, setNewComment] = useState('');
 	const [currentPhotoId, setCurrentPhotoId] = useState('');
+	const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
+	const bottomSheetRef = useRef<BottomSheet>(null);
 
-	const data: Photo[] = [
-		{ id: '1', source: require('./../../../assets/icon.png') },
-		{ id: '2', source: require('./../../../assets/icon.png') },
-		{ id: '3', source: require('./../../../assets/icon.png') },
-		{ id: '4', source: require('./../../../assets/icon.png') },
-		{ id: '5', source: require('./../../../assets/icon.png') },
-	];
+	const dispatch = useAppDispatch();
+	// dispatch(setMemes([]))
+	const memes = useAppSelector(retrieveMemes);
 
-	const handleLikePress = () => {
-		// Gérer l'action du bouton "like" ici
-	};
+	useEffect(() => {
+		const filterMemeList = async (query: MemeSearchQuery) => {
+			try {
+				const res = await retrieveMemeList(query);
+				dispatch(setMemes(res.data));
+			} catch (err) {
+				console.error(err.response);
+			}
+		};
+		filterMemeList({ c: 'test' });
+	}, [dispatch]);
 
 	const handleCommentPress = (id: string) => {
 		setCurrentPhotoId(id);
-		setCommentsVisible(true);
+		setIsBottomSheetVisible(true);
 	};
 
-	const handleCloseComments = () => {
-		setCommentsVisible(false);
-	};
+	const renderCommentItem = ({ item }: { item: string }) => (
+		<View style={styles.commentItem}>
+			<Text>{item}</Text>
+		</View>
+	);
 
-	const handleCommentSubmit = () => {
+	const handleAddComment = () => {
 		if (newComment.trim() !== '') {
-			setComments((prevComments) => ({
-				...prevComments,
-				[currentPhotoId]: [...(prevComments[currentPhotoId] || []), newComment],
-			}));
+			const memeId = currentPhotoId;
+			createMemeComment(memeId, { content: newComment });
 			setNewComment('');
 		}
 	};
 
+	const handleCloseSheet = () => {
+		setIsBottomSheetVisible(false);
+	};
+	console.log(memes);
 	return (
-		<KeyboardAvoidingView
-			enabled={true}
-			style={styles.container}
-			behavior={Platform.OS === 'ios' ? 'position' : undefined}
-		>
+		<View style={{ flex: 1 }}>
 			<Swiper
 				style={styles.wrapper}
 				loop={false}
 				showsPagination={false}
 				horizontal={false}
-				onIndexChanged={(index) => setCurrentPhotoId(data[index].id)}
+				onIndexChanged={(index) => setCurrentPhotoId(memes[index].id)}
 			>
-				{data.map((photo) => (
-					<View key={photo.id} style={styles.container}>
-						<Image source={photo.source} style={styles.image} />
-
+				{memes.map((meme) => (
+					<View key={meme.id} style={styles.slide}>
+						<Image source={{ uri: meme.upload.url }} style={styles.image} />
 						<View style={styles.overlay}>
-							<View style={styles.actionsContainer}>
-								<TouchableOpacity
-									style={styles.actionButton}
-									onPress={handleLikePress}
-								>
-									<Text style={styles.actionButtonText}>Like</Text>
-								</TouchableOpacity>
-								<TouchableOpacity
-									style={styles.actionButton}
-									onPress={() => handleCommentPress(photo.id)}
-								>
-									<Text style={styles.actionButtonText}>Comment</Text>
-								</TouchableOpacity>
+							<View style={styles.infoContainer}>
+								<Text style={styles.username}>{meme.username}</Text>
+								<Text style={styles.title}>{meme.title}</Text>
+								<Text style={styles.category}>{meme.category}</Text>
+								<Text style={styles.date}>{meme.createdAt}</Text>
 							</View>
-
-							<Modal
-								isVisible={commentsVisible}
-								onBackdropPress={handleCloseComments}
-								style={styles.modal}
-								backdropOpacity={0}
+							<TouchableOpacity
+								onPress={() => handleCommentPress(meme.id)}
+								style={styles.commentButton}
 							>
-								<View style={styles.modalContent}>
-									<View style={styles.row}>
-										<TouchableOpacity
-											style={styles.closeButton}
-											onPress={handleCloseComments}
-										>
-											<Text style={styles.closeButtonText}>Close</Text>
-										</TouchableOpacity>
-
-										<TextInput
-											placeholder="Add a comment..."
-											style={styles.input}
-											value={newComment}
-											onChangeText={(text) => setNewComment(text)}
-										/>
-
-										<TouchableOpacity
-											style={styles.sendButton}
-											onPress={handleCommentSubmit}
-										>
-											<Text style={styles.sendButtonText}>Send</Text>
-										</TouchableOpacity>
-									</View>
-
-									<ScrollView style={styles.commentsContainer}>
-										{(comments[currentPhotoId] || []).map(
-											(comment, commentIndex) => (
-												<Text key={commentIndex} style={styles.commentText}>
-													{comment}
-												</Text>
-											),
-										)}
-									</ScrollView>
-								</View>
-							</Modal>
+								<Text style={styles.commentButtonText}>Comment</Text>
+							</TouchableOpacity>
 						</View>
 					</View>
 				))}
 			</Swiper>
-		</KeyboardAvoidingView>
+			{isBottomSheetVisible && (
+				<BottomSheet
+					ref={bottomSheetRef}
+					index={0}
+					snapPoints={['25%', '50%', '75%', '100%']}
+				>
+					<View style={styles.bottomSheetContent}>
+						<BottomSheetFlatList
+							data={memes.find((meme) => meme.id === currentPhotoId)?.comments || []}
+							renderItem={renderCommentItem}
+							keyExtractor={(item, index) => index.toString()}
+						/>
+						<View style={styles.addCommentContainer}>
+							<TextInput
+								placeholder="Add a comment..."
+								value={newComment}
+								onChangeText={(text) => setNewComment(text)}
+								style={styles.commentInput}
+							/>
+							<TouchableOpacity onPress={handleAddComment}>
+								<Text style={styles.addCommentButton}>Add</Text>
+							</TouchableOpacity>
+						</View>
+						<TouchableOpacity onPress={handleCloseSheet} style={styles.closeButton}>
+							<Text style={styles.closeButtonText}>Close</Text>
+						</TouchableOpacity>
+					</View>
+				</BottomSheet>
+			)}
+		</View>
 	);
 };
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
 	wrapper: {
 		backgroundColor: 'black',
 	},
+	slide: {
+		flex: 1,
+	},
 	image: {
 		flex: 1,
-		width: '100%',
+		height: '100%',
 	},
 	overlay: {
 		...StyleSheet.absoluteFillObject,
-		justifyContent: 'flex-end',
-	},
-	actionsContainer: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		paddingHorizontal: 16,
-		paddingBottom: 16,
-	},
-	actionButton: {
-		backgroundColor: 'white',
-		padding: 8,
-		borderRadius: 8,
-		alignItems: 'center',
-	},
-	actionButtonText: {
-		color: 'black',
-	},
-	modal: {
-		margin: 0,
-		justifyContent: 'flex-end',
-	},
-	modalContent: {
-		backgroundColor: 'white',
-		height: '50%',
+		alignItems: 'flex-end',
 		padding: 16,
-		borderTopLeftRadius: 20,
-		borderTopRightRadius: 20,
 	},
-	input: {
-		flex: 5,
-		borderWidth: 1,
-		borderColor: 'gray',
-		borderRadius: 8,
-		padding: 8,
-		color: 'black',
-		height: 50,
-	},
-	sendButton: {
-		flex: 1,
-		backgroundColor: 'black',
+	commentButton: {
+		backgroundColor: 'white',
 		padding: 8,
 		borderRadius: 8,
-		height: 50,
-		justifyContent: 'center',
 		alignItems: 'center',
 	},
-	sendButtonText: {
+	commentButtonText: {
+		color: 'black',
+	},
+	infoContainer: {
+		justifyContent: 'flex-start',
+		maxWidth: '70%',
+	},
+	username: {
+		fontSize: 16,
+		fontWeight: 'bold',
 		color: 'white',
+		marginBottom: 4,
+	},
+	title: {
+		fontSize: 18,
+		fontWeight: 'bold',
+		color: 'white',
+		marginBottom: 4,
+	},
+	category: {
+		fontSize: 16,
+		color: 'white',
+		marginBottom: 4,
+	},
+	date: {
+		fontSize: 14,
+		color: 'white',
+		marginBottom: 4,
+	},
+	bottomSheetContent: {
+		backgroundColor: 'white',
+		padding: 16,
+	},
+	commentItem: {
+		borderBottomWidth: 1,
+		borderBottomColor: '#ddd',
+		padding: 8,
+	},
+	addCommentContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		marginTop: 16,
+	},
+	commentInput: {
+		flex: 1,
+		height: 40,
+		borderColor: 'gray',
+		borderWidth: 1,
+		borderRadius: 8,
+		padding: 8,
+		marginRight: 8,
+	},
+	addCommentButton: {
+		color: 'blue',
+		fontSize: 16,
+		fontWeight: 'bold',
 	},
 	closeButton: {
-		flex: 1,
-		backgroundColor: 'black',
-		padding: 8,
+		marginTop: 16,
+		backgroundColor: 'red',
+		padding: 12,
 		borderRadius: 8,
-		height: 50,
-		justifyContent: 'center',
 		alignItems: 'center',
 	},
 	closeButtonText: {
 		color: 'white',
-	},
-	commentsContainer: {
-		maxHeight: '50%',
-	},
-	commentText: {
-		color: 'black',
-		marginBottom: 8,
-		borderColor: 'black',
-		borderWidth: 1,
-		borderRadius: 5,
-		padding: 10,
-	},
-	row: {
-		display: 'flex',
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'center',
-		alignContent: 'center',
-		margin: 20,
-		gap: 10,
+		fontSize: 16,
+		fontWeight: 'bold',
 	},
 });
 
