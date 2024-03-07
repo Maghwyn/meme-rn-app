@@ -13,7 +13,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import LoginScreen from './screens/auth/LoginScreen';
 import SignupScreen from './screens/auth/SignupScreen';
 import VerificationScreen from './screens/auth/VerificationScreen';
-import FeedScreen from './screens/feed/feedScreen';
+import TabBar from './screens/tabBar/tabBar';
 
 const { store, persistor } = setupStore();
 
@@ -56,13 +56,13 @@ const App = () => {
 	return (
 		<NavigationContainer>
 			<Stack.Navigator
-				initialRouteName={isLoggedIn ? 'Feed' : 'Login'}
+				initialRouteName={isLoggedIn ? 'TabBar' : 'Login'}
 				screenOptions={{ headerShown: false }}
 			>
 				{isLoggedIn ? (
 					<Stack.Screen
-						name="Feed"
-						component={FeedScreen}
+						name="TabBar"
+						component={TabBar}
 						options={{
 							gestureEnabled: false,
 						}}
