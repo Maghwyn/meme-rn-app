@@ -1,3 +1,20 @@
+# [1.0.0-dev.3](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.2...v1.0.0-dev.3) (2024-03-07)
+
+
+### Bug Fixes
+
+* **auth:** call http client in signup & login & verification code screens ([b6c233a](https://github.com/Maghwyn/meme-rn-app/commit/b6c233abe311b57f042ca61dbde591c2d0855eee))
+* **env:** get varibles environnements with env.d.ts ([d992988](https://github.com/Maghwyn/meme-rn-app/commit/d9929884280e76b80c79ac14f9fc6a74ec5ed274))
+* **redux-persist:** Add middleware in setup redux store ([dbd1f66](https://github.com/Maghwyn/meme-rn-app/commit/dbd1f668cd3932be166398f9e6c87395d9354edc))
+
+
+### Features
+
+* **auth-ui:** creation de l'ui auth ([dd706a7](https://github.com/Maghwyn/meme-rn-app/commit/dd706a778e76b0c4b507b4dc2329f40b3a8aee79))
+* **auth:** all requests types payload & requests authentification ([5b2823e](https://github.com/Maghwyn/meme-rn-app/commit/5b2823ec50608b6720af6527992e38b587f65085))
+* **axios:** new axios instance client with base url api url ([004d3a9](https://github.com/Maghwyn/meme-rn-app/commit/004d3a96e0de54603c9ecac89a0877f631a9028b))
+* **feed-ui:** creation de l'ui feed ([0595b79](https://github.com/Maghwyn/meme-rn-app/commit/0595b79ac57e354a153b78ca372f35ae75e031c6))
+
 # [1.0.0-dev.2](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.1...v1.0.0-dev.2) (2024-03-06)
 
 ### Features
