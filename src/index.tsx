@@ -1,4 +1,5 @@
 import { client } from '@api/network/client';
+import { getMe } from '@api/user.req';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
 import AppNavigator from '@navigations/app/AppNavigator';
 import { NavigationContainer } from '@react-navigation/native';
@@ -7,6 +8,7 @@ import LoginScreen from '@screens/auth/LoginScreen';
 import SignupScreen from '@screens/auth/SignupScreen';
 import VerificationScreen from '@screens/auth/VerificationScreen';
 import { getToken, isAuth, setAuthentication } from '@store/reducers/authSlice';
+import { setUserData } from '@store/reducers/userSlice';
 import { setupStore } from '@store/store';
 import React, { useEffect } from 'react';
 import { Text } from 'react-native';
@@ -22,7 +24,6 @@ const App = () => {
 	const isLoggedIn = useAppSelector(isAuth);
 	const dispatch = useAppDispatch();
 
-	console.log('token', token);
 	if (token) {
 		client.defaults.headers.common.Authorization = `Bearer ${token}`;
 	}
@@ -31,12 +32,22 @@ const App = () => {
 		const checkLoginStatus = async () => {
 			if (token) {
 				client.defaults.headers.common.Authorization = `Bearer ${token}`;
+				try {
+					const res = await getMe();
+					if (res.status === 200) {
+						dispatch(setUserData(res.data));
+					}
+				} catch (error) {
+					console.error(error.response);
+					dispatch(setAuthentication(false));
+				}
 			} else {
 				dispatch(setAuthentication(false));
 			}
 		};
+
 		checkLoginStatus();
-	});
+	}, [token, dispatch]);
 
 	return (
 		<NavigationContainer>
