@@ -1,3 +1,10 @@
+# [1.0.0-dev.4](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.3...v1.0.0-dev.4) (2024-03-07)
+
+
+### Features
+
+* **feed-view:** like and comment button ([11a038f](https://github.com/Maghwyn/meme-rn-app/commit/11a038f6c12f6a3e0c3df1be7bfad49770231883))
+
 # [1.0.0-dev.3](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.2...v1.0.0-dev.3) (2024-03-07)
 
 
