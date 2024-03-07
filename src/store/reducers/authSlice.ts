@@ -3,12 +3,12 @@ import type { RootState } from '@store/store';
 
 export interface AuthState {
 	isAuth: boolean;
-	token: string | null;
+	token: string | undefined;
 }
 
 const initialState: AuthState = {
 	isAuth: false,
-	token: null,
+	token: undefined,
 };
 
 export const authSlice = createSlice({
@@ -22,8 +22,8 @@ export const authSlice = createSlice({
 			state.token = action.payload;
 		},
 		logoutUser: (state) => {
-			state.token = null;
-			setToken(null);
+			state.token = undefined;
+			setToken(undefined);
 		},
 	},
 });

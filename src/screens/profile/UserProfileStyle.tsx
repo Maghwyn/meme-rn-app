@@ -35,12 +35,10 @@ export const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		marginBottom: 5,
 	},
-	email: {
-		fontSize: 16,
-		color: '#555',
+	userBio: {
 		marginBottom: 5,
+		textAlign: 'center',
 	},
-
 	viewTabButtons: {
 		marginTop: 10,
 		flexDirection: 'row',

@@ -1,24 +1,26 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import type { User } from '@api/user.req.type.ts';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import type { RootState } from '@store/store';
 
 export interface UserState {
-	username: string;
+	value: Partial<User>;
 }
 
 const initialState: UserState = {
-	username: '',
+	value: {},
 };
 
-export const authSlice = createSlice({
+export const userSlice = createSlice({
 	name: 'user',
 	initialState,
 	reducers: {
-		setUsername: (state, action: PayloadAction<string>) => {
-			state.username = action.payload;
+		setUserData: (state, action: PayloadAction<User>) => {
+			state.value = action.payload;
 		},
 	},
 });
 
-export const { setUsername } = authSlice.actions;
-export const retrieveUsername = (state: RootState) => state.user.username;
-export default authSlice.reducer;
+export const { setUserData } = userSlice.actions;
+export const retrieveUser = (state: RootState) => state.user;
+export default userSlice.reducer;
