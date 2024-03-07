@@ -1,4 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import FeedScreen from '@screens/feed/FeedHomeScreen';
 import CreateMemeScreen from '@screens/meme/CreateMemeScreen';
 import UserProfileScreen from '@screens/profile/UserProfileScreen';
 import ProfileSvg from 'assets/profile';
@@ -6,7 +7,6 @@ import React from 'react';
 
 import CreateSvg from '../../../assets/create';
 import HomeSvg from '../../../assets/home';
-import FeedScreen from '../../screens/feed/feedScreen';
 
 const Tab = createBottomTabNavigator();
 
