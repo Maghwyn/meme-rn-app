@@ -3,7 +3,7 @@
 	"compilerOptions": {
 		"target": "esnext",
 		"module": "es2015",
-		"types": ["react-native", "jest"],
+		"types": ["react-native", "jest", "./env.d.ts"],
 		"lib": [
 			"es2019",
 			"es2020.bigint",
@@ -38,10 +38,10 @@
 		"paths": {
 			"@api/*": ["src/api/*"],
 			"@core/*": ["src/core/*"],
+			"@store/*": ["src/store/*"],
 			"@hooks/*": ["src/hooks/*"],
 			"@i18n": ["src/i18n"],
 			"@screens": ["src/screens"],
-			"@store/*": ["src/store/*"],
 			"@ui": ["src/ui"]
 		}
 	}
