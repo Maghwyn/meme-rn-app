@@ -1,3 +1,16 @@
+# [1.0.0-dev.8](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.7...v1.0.0-dev.8) (2024-03-07)
+
+
+### Bug Fixes
+
+* **babel:** Configuration react native dotenv babel config ([73454df](https://github.com/Maghwyn/meme-rn-app/commit/73454dfb86f8b34cd08ac0348dc8457273054a08))
+
+
+### Features
+
+* **create-meme:** Create meme screen with little style & fix tab bar screen navigate ([53f4786](https://github.com/Maghwyn/meme-rn-app/commit/53f47869719484408f1d8d2851d8048a6ace39a9))
+* **logout:** Logout button in user profil screen & fix meme requests ([44397c3](https://github.com/Maghwyn/meme-rn-app/commit/44397c375d9e4704e385b8f3824cce8419dcdc71))
+
 # [1.0.0-dev.7](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.6...v1.0.0-dev.7) (2024-03-07)
 
 
