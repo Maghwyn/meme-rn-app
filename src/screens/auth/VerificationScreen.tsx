@@ -1,3 +1,7 @@
+import { activateUserAccount } from '@api/auth.req';
+import { client } from '@api/network/client';
+import { useAppDispatch } from '@hooks/redux';
+import { setAuthentication, setToken } from '@store/reducers/authSlice';
 import React, { useEffect, useRef, useState } from 'react';
 import { BackHandler, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
@@ -12,15 +16,30 @@ export type VerificationScreen = {
 };
 
 const VerificationScreen: VerificationScreen = ({ navigation }) => {
+	const dispatch = useAppDispatch();
+
 	const [verificationCode, setVerificationCode] = useState<string[]>(['', '', '', '', '', '']);
-	const codeInputs = useRef<Array<TextInput | null>>(Array(verificationCode.length).fill(null));
+	const codeInputs = useRef<Array<TextInput>>(Array(verificationCode.length).fill(null));
 
 	useEffect(() => {
 		const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackspace);
 		return () => backHandler.remove();
 	}, [verificationCode]);
 
-	const handleVerification = async () => console.log(verificationCode.join(''));
+	const handleVerification = async () => {
+		try {
+			const res = await activateUserAccount({ token: verificationCode.join('') });
+			if (res.status === 200) {
+				dispatch(setToken(res.data));
+				dispatch(setAuthentication(true));
+				client.defaults.headers.post.Authorization = `Bearer ${res.data}`;
+				navigation.navigate('Login');
+			}
+		} catch (error) {
+			console.log('error');
+			console.log(error);
+		}
+	};
 
 	const handleChangeText = (text: string, index: number) => {
 		setVerificationCode((prevCode) => {
@@ -129,6 +148,7 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		color: 'white',
 		backgroundColor: 'black',
+		borderRadius: 10,
 	},
 	signupText: {
 		color: 'white',

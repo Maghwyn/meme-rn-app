@@ -1,3 +1,4 @@
+import { signupUser } from '@api/auth.req';
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
@@ -14,19 +15,26 @@ export type SignupScreen = {
 const SignupScreen: SignupScreen = ({ navigation }) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const [pseudo, setPseudo] = useState('');
+	const [username, setUsername] = useState('');
 
-	const handleSignup = () => {
-		navigation.navigate('Verification');
+	const handleSignup = async () => {
+		try {
+			const res = await signupUser({ username, email, password });
+			if (res.status === 201) {
+				navigation.navigate('Verification');
+			}
+		} catch (error) {
+			console.log(error.response.error);
+		}
 	};
 
 	return (
 		<View style={styles.container}>
 			<TextInput
 				style={styles.input}
-				placeholder="Speudo"
-				value={pseudo}
-				onChangeText={setPseudo}
+				placeholder="Pseudo"
+				value={username}
+				onChangeText={setUsername}
 				placeholderTextColor="#B0B0B0"
 			/>
 			<TextInput
@@ -65,6 +73,7 @@ const styles = StyleSheet.create({
 		marginBottom: 12,
 		paddingHorizontal: 8,
 		color: 'white',
+		borderRadius: 10,
 	},
 	button: {
 		backgroundColor: 'black',
