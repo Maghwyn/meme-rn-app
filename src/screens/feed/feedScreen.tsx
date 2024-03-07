@@ -4,8 +4,19 @@ import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
 import { retrieveMemes, setMemes } from '@store/reducers/memesSlice';
 import React, { useEffect, useRef, useState } from 'react';
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+	Alert,
+	Image,
+	Modal,
+	StyleSheet,
+	Text,
+	TextInput,
+	TouchableOpacity,
+	View,
+} from 'react-native';
 import Swiper from 'react-native-swiper';
+
+import SearchSvg from './../../../assets/search';
 
 interface FeedScreenProps {
 	navigation: any;
@@ -20,6 +31,8 @@ const FeedScreen: FeedScreen = () => {
 	const [currentPhotoId, setCurrentPhotoId] = useState('');
 	const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
 	const bottomSheetRef = useRef<BottomSheet>(null);
+	const [isSearchModalVisible, setIsSearchModalVisible] = useState(false);
+	const [searchQuery, setSearchQuery] = useState('');
 
 	const dispatch = useAppDispatch();
 	// dispatch(setMemes([]))
@@ -37,12 +50,31 @@ const FeedScreen: FeedScreen = () => {
 		filterMemeList({ c: 'test' });
 	}, [dispatch]);
 
+	const filterMemeList = async (query: MemeSearchQuery) => {
+		try {
+			const res = await retrieveMemeList(query);
+			if (res.data.length !== 0) {
+				dispatch(setMemes(res.data));
+			} else {
+				Alert.alert('Votre recherche est vide');
+				setSearchQuery('');
+			}
+		} catch (err) {
+			console.error(err.response);
+		}
+	};
+
+	const handleSearch = () => {
+		filterMemeList({ c: 'test', q: searchQuery });
+		setIsSearchModalVisible(false);
+	};
+
 	const handleCommentPress = (id: string) => {
 		setCurrentPhotoId(id);
 		setIsBottomSheetVisible(true);
 	};
 
-	const commentsToDisplay = memes.find((meme) => meme.id === currentPhotoId)?.comments || [];
+	const commentsToDisplay = memes.find((meme) => meme?.id === currentPhotoId)?.comments || [];
 	console.log(commentsToDisplay);
 
 	const renderCommentItem = ({ item }: { item: Comment }) => (
@@ -66,33 +98,62 @@ const FeedScreen: FeedScreen = () => {
 
 	return (
 		<View style={{ flex: 1 }}>
-			<Swiper
-				style={styles.wrapper}
-				loop={false}
-				showsPagination={false}
-				horizontal={false}
-				onIndexChanged={(index) => setCurrentPhotoId(memes[index].id)}
-			>
-				{memes.map((meme) => (
-					<View key={meme.id} style={styles.slide}>
-						<Image source={{ uri: meme.upload.url }} style={styles.image} />
-						<View style={styles.overlay}>
-							<View style={styles.infoContainer}>
-								<Text style={styles.username}>{meme.username}</Text>
-								<Text style={styles.title}>{meme.title}</Text>
-								<Text style={styles.category}>{meme.category}</Text>
-								<Text style={styles.date}>{meme.createdAt}</Text>
-							</View>
-							<TouchableOpacity
-								onPress={() => handleCommentPress(meme.id)}
-								style={styles.commentButton}
-							>
-								<Text style={styles.commentButtonText}>Comment</Text>
+			<View style={{ flex: 1 }}>
+				<Modal visible={isSearchModalVisible} animationType="slide" transparent>
+					<TouchableOpacity
+						style={styles.modalContainer}
+						activeOpacity={1}
+						onPress={() => setIsSearchModalVisible(false)}
+					>
+						<View style={styles.modalContent}>
+							<TextInput
+								placeholder="Rechercher..."
+								value={searchQuery}
+								onChangeText={(text) => setSearchQuery(text)}
+								style={styles.searchInput}
+							/>
+							<TouchableOpacity onPress={handleSearch}>
+								<Text>Rechercher</Text>
 							</TouchableOpacity>
 						</View>
-					</View>
-				))}
-			</Swiper>
+					</TouchableOpacity>
+				</Modal>
+				<Swiper
+					style={styles.wrapper}
+					loop={false}
+					showsPagination={false}
+					horizontal={false}
+					onIndexChanged={(index) => setCurrentPhotoId(memes[index].id)}
+				>
+					{memes.map((meme) => (
+						<View key={meme?.id} style={styles.slide}>
+							<Image source={{ uri: meme.upload.url }} style={styles.image} />
+							<View style={styles.overlay}>
+								<TouchableOpacity
+									onPress={() => setIsSearchModalVisible(true)}
+									style={styles.search}
+								>
+									<View>
+										<SearchSvg name="search" size={24} color="black" />
+									</View>
+								</TouchableOpacity>
+								<View style={styles.infoContainer}>
+									<Text style={styles.username}>{meme.username}</Text>
+									<Text style={styles.title}>{meme.title}</Text>
+									<Text style={styles.category}>{meme.category}</Text>
+									<Text style={styles.date}>{meme.createdAt}</Text>
+								</View>
+								<TouchableOpacity
+									onPress={() => handleCommentPress(meme.id)}
+									style={styles.commentButton}
+								>
+									<Text style={styles.commentButtonText}>Comment</Text>
+								</TouchableOpacity>
+							</View>
+						</View>
+					))}
+				</Swiper>
+			</View>
 			{isBottomSheetVisible && (
 				<BottomSheet
 					ref={bottomSheetRef}
@@ -136,8 +197,9 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	image: {
-		flex: 1,
 		height: '100%',
+		width: '100%',
+		resizeMode: 'contain',
 	},
 	overlay: {
 		...StyleSheet.absoluteFillObject,
@@ -145,6 +207,12 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		alignItems: 'flex-end',
 		padding: 16,
+	},
+	search: {
+		...StyleSheet.absoluteFillObject,
+		margin: 20,
+		width: 20,
+		height: 20,
 	},
 	commentButton: {
 		backgroundColor: 'white',
@@ -229,6 +297,30 @@ const styles = StyleSheet.create({
 		width: 100,
 		height: 100,
 		flexDirection: 'column',
+	},
+	modalContainer: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: 'rgba(0, 0, 0, 0.2)',
+	},
+
+	modalContent: {
+		backgroundColor: 'white',
+		padding: 16,
+		borderRadius: 8,
+		width: 200,
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+
+	searchInput: {
+		borderColor: 'gray',
+		borderWidth: 1,
+		padding: 8,
+		marginBottom: 16,
+		width: '100%',
 	},
 });
 
