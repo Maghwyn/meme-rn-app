@@ -2,6 +2,7 @@ import { activateUserAccount } from '@api/auth.req';
 import { client } from '@api/network/client';
 import { useAppDispatch } from '@hooks/redux';
 import { setAuthentication, setToken } from '@store/reducers/authSlice';
+import { AxiosError } from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { BackHandler, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
@@ -36,8 +37,9 @@ const VerificationScreen: VerificationScreen = ({ navigation }) => {
 				// navigation.navigate('Login');
 			}
 		} catch (error) {
-			console.log('error');
-			console.log(error);
+			if (error instanceof AxiosError) {
+				console.log(error.response?.data);
+			}
 		}
 	};
 

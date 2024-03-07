@@ -4,7 +4,7 @@ import { uploadFile } from '@api/upload.req';
 import { AxiosError } from 'axios';
 import React, { useState } from 'react';
 import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import type { ImageLibraryOptions, ImagePickerResponse } from 'react-native-image-picker';
+import type { Asset, ImageLibraryOptions } from 'react-native-image-picker';
 import { launchImageLibrary } from 'react-native-image-picker';
 
 import { styles } from './CreateMemeScreenStyle';
@@ -32,22 +32,21 @@ const CreateMemeScreen: CreateMemeScreen = () => {
 			maxWidth: 2000,
 		};
 
-		launchImageLibrary(options, async (response: ImagePickerResponse) => {
+		launchImageLibrary(options, async (response) => {
 			if (response.didCancel) {
 				console.log('User cancelled image picker');
-			} else if (response.error) {
-				console.log('Image picker error: ', response.error);
+			} else if (response.errorMessage) {
+				console.log('Image picker error: ', response.errorMessage);
 			} else {
-				const formData = buildFormDataFrom(response);
+				const metadata = response.assets![0];
+				const formData = buildFormDataFrom(metadata);
 				await tryUploadFile(formData);
-				let imageUri = response.uri || response.assets?.[0]?.uri;
-				setUplodadImage(imageUri);
+				setUplodadImage(metadata.uri as string);
 			}
 		});
 	};
 
-	const buildFormDataFrom = (res: ImagePickerResponse) => {
-		const metadata = res.assets[0];
+	const buildFormDataFrom = (metadata: Asset) => {
 		const formData = new FormData();
 		formData.append('file', {
 			uri: metadata.uri,
@@ -63,12 +62,10 @@ const CreateMemeScreen: CreateMemeScreen = () => {
 			const res = await uploadFile(formData);
 			const upload = res.data;
 
-			// TODO: You need to append the upload to the payload to create the meme
 			await createMeme({ title, category: selectedCategory, upload });
-		} catch (err) {
-			if (err instanceof AxiosError) {
-				console.error(err.response);
-				console.error(err.response.error);
+		} catch (error) {
+			if (error instanceof AxiosError) {
+				console.log(error.response?.data);
 			}
 		}
 	};
