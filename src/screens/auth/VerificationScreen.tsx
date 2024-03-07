@@ -33,8 +33,8 @@ const VerificationScreen: VerificationScreen = ({ navigation }) => {
 			if (res.status === 200) {
 				dispatch(setToken(res.data));
 				dispatch(setAuthentication(true));
-				client.defaults.headers.post.Authorization = `Bearer ${res.data}`;
-				// navigation.navigate('Login');
+				client.defaults.headers.common.Authorization = `Bearer ${res.data}`;
+				navigation.navigate('TabBar');
 			}
 		} catch (error) {
 			if (error instanceof AxiosError) {
