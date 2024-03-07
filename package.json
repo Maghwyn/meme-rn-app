@@ -1,6 +1,6 @@
 {
 	"name": "meme-rn-app",
-	"version": "1.0.0-dev.7",
+	"version": "1.0.0-dev.8",
 	"private": true,
 	"scripts": {
 		"android": "react-native run-android",
