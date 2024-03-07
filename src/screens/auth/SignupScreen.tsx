@@ -24,7 +24,7 @@ const SignupScreen: SignupScreen = ({ navigation }) => {
 				navigation.navigate('Verification');
 			}
 		} catch (error) {
-			console.log(error);
+			console.log(error.response.error);
 		}
 	};
 

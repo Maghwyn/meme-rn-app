@@ -1,11 +1,11 @@
 // App.tsx
-import { useAppDispatch } from '@hooks/redux';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { client } from '@api/network/client';
+import { useAppSelector } from '@hooks/redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { setAuthentification, setToken } from '@store/reducers/authSlice';
+import { getToken, isAuth } from '@store/reducers/authSlice';
 import { setupStore } from '@store/store';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Text } from 'react-native';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -41,20 +41,13 @@ dispatch(serUsername("bob"));
 */
 
 const App = () => {
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
-	const dispatch = useAppDispatch();
+	const token = useAppSelector(getToken);
+	const isLoggedIn = useAppSelector(isAuth);
 
 	useEffect(() => {
 		const checkLoginStatus = async () => {
-			try {
-				const isLoggedInValue = await AsyncStorage.getItem('token');
-				if (isLoggedInValue) {
-					dispatch(setToken(isLoggedInValue));
-					dispatch(setAuthentification(true));
-					setIsLoggedIn(true);
-				}
-			} catch (error) {
-				console.error("Erreur lors de la récupération de l'état de connexion : ", error);
+			if (token) {
+				client.defaults.headers.post.Authorization = `Bearer ${token}`;
 			}
 		};
 		checkLoginStatus();
