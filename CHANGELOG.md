@@ -1,3 +1,12 @@
+# [1.0.0-dev.6](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.5...v1.0.0-dev.6) (2024-03-07)
+
+
+### Features
+
+* **api:** Create the api requests for the memes and the upload ([6543cce](https://github.com/Maghwyn/meme-rn-app/commit/6543ccebc4c1e12e60da8a47bca96c55ed677433))
+* **store:** Implement the meme store and fix the duplicated import in the other store ([b5d2fe6](https://github.com/Maghwyn/meme-rn-app/commit/b5d2fe6416ee3ee64718c676802b7f484e2497ea))
+* **utils:** Define some string utilities ([d86f63c](https://github.com/Maghwyn/meme-rn-app/commit/d86f63cab495ec8ff67791780e75f21be2b15e2e))
+
 # [1.0.0-dev.5](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.4...v1.0.0-dev.5) (2024-03-07)
 
 
