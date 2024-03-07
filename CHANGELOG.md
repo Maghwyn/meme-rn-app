@@ -1,3 +1,11 @@
+# [1.0.0-dev.7](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.6...v1.0.0-dev.7) (2024-03-07)
+
+
+### Features
+
+* **bottom-tab:** index ([91937c9](https://github.com/Maghwyn/meme-rn-app/commit/91937c970a31faccee40b486bf114d5a4261ead5))
+* **feed-bottom-tab:** bottom bar creation ([c117759](https://github.com/Maghwyn/meme-rn-app/commit/c1177598b9a17a25ec36b3c30452362e8b467e03))
+
 # [1.0.0-dev.6](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.5...v1.0.0-dev.6) (2024-03-07)
 
 
