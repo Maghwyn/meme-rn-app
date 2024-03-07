@@ -3,7 +3,15 @@ import { setAuthentication, setToken } from '@store/reducers/authSlice';
 import React from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 
-const ProfileScreen = () => {
+type UserProfileScreenProps = {
+	navigation: any;
+};
+
+type UserProfileScreen = {
+	(props: UserProfileScreenProps): React.JSX.Element;
+};
+
+const UserProfileScreen: UserProfileScreen = () => {
 	const dispatch = useAppDispatch();
 
 	const logoutUser = () => {
@@ -27,4 +35,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default ProfileScreen;
+export default UserProfileScreen;
