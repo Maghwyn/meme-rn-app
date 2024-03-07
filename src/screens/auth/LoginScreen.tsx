@@ -1,6 +1,7 @@
 import { loginUser } from '@api/auth.req';
+import { client } from '@api/network/client';
 import { useAppDispatch } from '@hooks/redux';
-import { setAuthentification, setToken } from '@store/reducers/authSlice';
+import { setAuthentication, setToken } from '@store/reducers/authSlice';
 import React, { useState } from 'react';
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
@@ -21,9 +22,9 @@ const LoginScreen: LoginScreen = ({ navigation }) => {
 		try {
 			const res = await loginUser({ email, password });
 			if (res.status === 200) {
-				// await AsyncStorage.setItem('token', res.data);
 				dispatch(setToken(res.data));
-				dispatch(setAuthentification(true));
+				dispatch(setAuthentication(true));
+				client.defaults.headers.post.Authorization = `Bearer ${res.data}`;
 				navigation.navigate('Feed');
 			}
 		} catch (error) {
