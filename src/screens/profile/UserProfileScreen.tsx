@@ -1,7 +1,9 @@
+import { getUserById } from '@api/user.req';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
 import { setAuthentication, setToken } from '@store/reducers/authSlice';
-import { retrieveUser } from '@store/reducers/userSlice';
-import React, { useState } from 'react';
+import { getAnotherUserId, retrieveUser, setUserData } from '@store/reducers/userSlice';
+import { AxiosError } from 'axios';
+import React, { useEffect, useState } from 'react';
 import { Button, Image, ImageBackground, Text, View } from 'react-native';
 import UserProfilComments from 'src/components/user-profil/UserProfilComments';
 import UserProfilLikedMemeLists from 'src/components/user-profil/UserProfilLikedMemeLists';
@@ -20,12 +22,33 @@ type UserProfileScreen = {
 const UserProfileScreen: UserProfileScreen = () => {
 	const dispatch = useAppDispatch();
 	const userData = useAppSelector(retrieveUser);
+	const anotherUserId = useAppSelector(getAnotherUserId);
 	const [filter, setFilter] = useState<'memes' | 'likedMemes' | 'comments'>('memes');
 
 	const logoutUser = () => {
 		dispatch(setToken(undefined));
 		dispatch(setAuthentication(false));
 	};
+
+	useEffect(() => {
+		const getUserByIdRequest = async (userIdParam: string) => {
+			try {
+				const res = await getUserById(userIdParam);
+				if (res.status === 200) {
+					dispatch(setUserData(res.data));
+				}
+			} catch (error) {
+				if (error instanceof AxiosError) {
+					console.log(error.response?.data);
+				}
+			}
+		};
+		if (anotherUserId !== undefined) {
+			getUserByIdRequest(anotherUserId);
+		} else {
+			console.log(`c'est moi ${userData.value.username}`);
+		}
+	}, [anotherUserId, dispatch, userData.value.id, userData.value.username]);
 
 	return (
 		<View style={styles.container}>

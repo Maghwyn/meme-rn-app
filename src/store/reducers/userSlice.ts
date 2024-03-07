@@ -5,10 +5,12 @@ import type { RootState } from '@store/store';
 
 export interface UserState {
 	value: Partial<User>;
+	anotherUserId: string;
 }
 
 const initialState: UserState = {
 	value: {},
+	anotherUserId: '',
 };
 
 export const userSlice = createSlice({
@@ -18,9 +20,13 @@ export const userSlice = createSlice({
 		setUserData: (state, action: PayloadAction<User>) => {
 			state.value = action.payload;
 		},
+		setAnotherUserId: (state, action: PayloadAction<string>) => {
+			state.anotherUserId = action.payload;
+		},
 	},
 });
 
-export const { setUserData } = userSlice.actions;
+export const { setUserData, setAnotherUserId } = userSlice.actions;
 export const retrieveUser = (state: RootState) => state.user;
+export const getAnotherUserId = (state: RootState) => state.user.anotherUserId;
 export default userSlice.reducer;
