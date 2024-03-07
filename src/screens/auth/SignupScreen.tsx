@@ -1,4 +1,5 @@
 import { signupUser } from '@api/auth.req';
+import { AxiosError } from 'axios';
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
@@ -24,7 +25,9 @@ const SignupScreen: SignupScreen = ({ navigation }) => {
 				navigation.navigate('Verification');
 			}
 		} catch (error) {
-			console.log(error.response.error);
+			if (error instanceof AxiosError) {
+				console.log(error.response?.data);
+			}
 		}
 	};
 
