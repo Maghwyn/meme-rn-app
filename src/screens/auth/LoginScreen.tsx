@@ -1,5 +1,6 @@
 import { loginUser } from '@api/auth.req';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAppDispatch } from '@hooks/redux';
+import { setAuthentification, setToken } from '@store/reducers/authSlice';
 import React, { useState } from 'react';
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
@@ -14,12 +15,15 @@ export type LoginScreen = {
 const LoginScreen: LoginScreen = ({ navigation }) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const dispatch = useAppDispatch();
 
 	const handleLogin = async () => {
 		try {
 			const res = await loginUser({ email, password });
 			if (res.status === 200) {
-				await AsyncStorage.setItem('token', res.data);
+				// await AsyncStorage.setItem('token', res.data);
+				dispatch(setToken(res.data));
+				dispatch(setAuthentification(true));
 				navigation.navigate('Feed');
 			}
 		} catch (error) {
