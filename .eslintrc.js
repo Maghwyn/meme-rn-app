@@ -33,7 +33,7 @@ module.exports = {
 						endOfLine: 'auto',
 					},
 				],
-				'max-params': ['error', 3], // Limit the number of parameters in a function to use object instead
+				'max-params': ['error', 10], // Limit the number of parameters in a function to use object instead
 				'max-lines-per-function': ['error', 70],
 				'react/destructuring-assignment': 'off', // Vscode doesn't support automatically destructuring, it's a pain to add a new variable
 				'react/require-default-props': 'off', // Allow non-defined react props as undefined

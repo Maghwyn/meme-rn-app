@@ -1,3 +1,4 @@
+import { activateUserAccount } from '@api/auth.req';
 import React, { useEffect, useRef, useState } from 'react';
 import { BackHandler, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
@@ -20,7 +21,17 @@ const VerificationScreen: VerificationScreen = ({ navigation }) => {
 		return () => backHandler.remove();
 	}, [verificationCode]);
 
-	const handleVerification = async () => console.log(verificationCode.join(''));
+	const handleVerification = async () => {
+		try {
+			const res = await activateUserAccount({ token: verificationCode.join('') });
+			if (res.status === 200) {
+				navigation.navigate('Login');
+			}
+		} catch (error) {
+			console.log('error');
+			console.log(error);
+		}
+	};
 
 	const handleChangeText = (text: string, index: number) => {
 		setVerificationCode((prevCode) => {
@@ -129,6 +140,7 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		color: 'white',
 		backgroundColor: 'black',
+		borderRadius: 10,
 	},
 	signupText: {
 		color: 'white',
