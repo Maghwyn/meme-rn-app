@@ -1,3 +1,11 @@
+# [1.0.0-dev.9](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.8...v1.0.0-dev.9) (2024-03-07)
+
+
+### Features
+
+* **meme-list-comment:** show comment ([15d30df](https://github.com/Maghwyn/meme-rn-app/commit/15d30df09a2175d293cfe67ab56f9f03ba81a241))
+* **meme-list-comment:** show image and meme,send comment ([f8e2c17](https://github.com/Maghwyn/meme-rn-app/commit/f8e2c1773c37885957d9c36e4cfbb4116b3aed7b))
+
 # [1.0.0-dev.8](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.7...v1.0.0-dev.8) (2024-03-07)
 
 
