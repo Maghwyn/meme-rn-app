@@ -1,3 +1,15 @@
+# [1.0.0-dev.5](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.4...v1.0.0-dev.5) (2024-03-07)
+
+
+### Bug Fixes
+
+* **eslint:** Restriction rule for max lignes for a function at 100 lines ([75b28c8](https://github.com/Maghwyn/meme-rn-app/commit/75b28c8f49df7aa5a0b32d2396e4d2e14e326337))
+
+
+### Features
+
+* **auth:** Dispatch jwt token & state boolean for user isAuth ([68e2792](https://github.com/Maghwyn/meme-rn-app/commit/68e27928abb6f1ca976004fa1b4d06b3835b1b85))
+
 # [1.0.0-dev.4](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.3...v1.0.0-dev.4) (2024-03-07)
 
 
