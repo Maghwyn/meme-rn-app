@@ -33,7 +33,7 @@ const VerificationScreen: VerificationScreen = ({ navigation }) => {
 				dispatch(setToken(res.data));
 				dispatch(setAuthentication(true));
 				client.defaults.headers.post.Authorization = `Bearer ${res.data}`;
-				navigation.navigate('Login');
+				// navigation.navigate('Login');
 			}
 		} catch (error) {
 			console.log('error');

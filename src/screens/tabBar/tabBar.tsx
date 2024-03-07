@@ -1,10 +1,10 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import CreateMemeScreen from '@screens/meme/CreateMemeScreen';
 import React from 'react';
 
 import CreateSvg from './../../../assets/create';
 import HomeSvg from './../../../assets/home';
 import ProfileSvg from './../../../assets/profile';
-import CreateScreen from './../create/createScreen';
 import FeedScreen from './../feed/feedScreen';
 import ProfileScreen from './../profile/profileScreen';
 
@@ -19,7 +19,7 @@ const TabBar = () => {
 
 					if (route.name === 'Feed') {
 						iconComponent = <HomeSvg size={size} fill={focused ? 'blue' : 'black'} />;
-					} else if (route.name === 'Create') {
+					} else if (route.name === 'CreateMeme') {
 						iconComponent = <CreateSvg size={size} fill={focused ? 'blue' : 'black'} />;
 					} else if (route.name === 'Profile') {
 						iconComponent = (
@@ -32,7 +32,11 @@ const TabBar = () => {
 			})}
 		>
 			<Tab.Screen name="Feed" component={FeedScreen} options={{ headerShown: false }} />
-			<Tab.Screen name="Create" component={CreateScreen} options={{ headerShown: false }} />
+			<Tab.Screen
+				name="CreateMeme"
+				component={CreateMemeScreen}
+				options={{ headerShown: false }}
+			/>
 			<Tab.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
 		</Tab.Navigator>
 	);

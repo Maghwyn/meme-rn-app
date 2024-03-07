@@ -14,9 +14,9 @@ export const retrieveMemeList = (query: MemeSearchQuery) => {
 };
 
 export const createMeme = (payload: NewMemePayload) => {
-	return client.post<Meme>('/meme', payload);
+	return client.post<Meme>('/memes', payload);
 };
 
 export const createMemeComment = (id: MemeId, payload: NewMemeCommentPayload) => {
-	return client.post<Comment>(`meme/comment/${id}`, payload);
+	return client.post<Comment>(`memes/comment/${id}`, payload);
 };
