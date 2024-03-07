@@ -1,11 +1,20 @@
+import { useAppDispatch } from '@hooks/redux';
+import { setAuthentication, setToken } from '@store/reducers/authSlice';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
 
 const ProfileScreen = () => {
+	const dispatch = useAppDispatch();
+
+	const logoutUser = () => {
+		dispatch(setToken(undefined));
+		dispatch(setAuthentication(false));
+	};
+
 	return (
 		<View style={styles.container}>
 			<Text>Profile Screen</Text>
-			{/* Ajoutez ici le contenu de votre page de profil */}
+			<Button title="Logout" onPress={logoutUser} />
 		</View>
 	);
 };

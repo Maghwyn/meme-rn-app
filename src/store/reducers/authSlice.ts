@@ -21,10 +21,14 @@ export const authSlice = createSlice({
 		setToken: (state, action) => {
 			state.token = action.payload;
 		},
+		logoutUser: (state) => {
+			state.token = null;
+			setToken(null);
+		},
 	},
 });
 
-export const { setAuthentication, setToken } = authSlice.actions;
+export const { setAuthentication, setToken, logoutUser } = authSlice.actions;
 export const isAuth = (state: RootState) => state.auth.isAuth;
 export const getToken = (state: RootState) => state.auth.token;
 export default authSlice.reducer;
