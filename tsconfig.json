@@ -40,9 +40,10 @@
 			"@core/*": ["src/core/*"],
 			"@store/*": ["src/store/*"],
 			"@hooks/*": ["src/hooks/*"],
-			"@i18n": ["src/i18n"],
-			"@screens": ["src/screens"],
-			"@ui": ["src/ui"]
+			"@i18n/*": ["src/i18n/*"],
+			"@screens/*": ["src/screens/*"],
+			"@ui/*": ["src/ui/*"],
+			"@utils/*": ["src/utils/*"]
 		}
 	}
 }
