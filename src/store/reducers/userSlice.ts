@@ -1,24 +1,45 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import type { User } from '@api/user.req.type.ts';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import type { RootState } from '@store/store';
 
 export interface UserState {
-	username: string;
+	value: Partial<User>;
+	profileId: string;
+
+	// clones data used for any user profile, so we keep the value for our own user stored
+	profileData: Partial<User>;
 }
 
 const initialState: UserState = {
-	username: '',
+	value: {},
+	profileId: '',
+	profileData: {},
 };
 
-export const authSlice = createSlice({
+export const userSlice = createSlice({
 	name: 'user',
 	initialState,
 	reducers: {
-		setUsername: (state, action: PayloadAction<string>) => {
-			state.username = action.payload;
+		setUserData: (state, action: PayloadAction<Partial<User>>) => {
+			state.value = action.payload;
+		},
+		willViewUserProfileOf: (state, action: PayloadAction<string>) => {
+			state.profileId = action.payload;
+		},
+		setUserProfileData: (state, action: PayloadAction<Partial<User>>) => {
+			state.profileData = action.payload;
+		},
+		resetUserProfile: (state) => {
+			state.profileId = '';
+			state.profileData = {};
 		},
 	},
 });
 
-export const { setUsername } = authSlice.actions;
-export const retrieveUsername = (state: RootState) => state.user.username;
-export default authSlice.reducer;
+export const { setUserData, willViewUserProfileOf, setUserProfileData, resetUserProfile } =
+	userSlice.actions;
+export const retrieveUser = (state: RootState) => state.user.value;
+export const retrieveUserProfile = (state: RootState) => state.user.profileData;
+export const retrieveUserProfileId = (state: RootState) => state.user.profileId;
+export default userSlice.reducer;

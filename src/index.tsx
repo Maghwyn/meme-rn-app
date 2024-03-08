@@ -1,65 +1,55 @@
-// App.tsx
 import { client } from '@api/network/client';
+import { getMe } from '@api/user.req';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
+import AppNavigator from '@navigations/app/AppNavigator';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import LoginScreen from '@screens/auth/LoginScreen';
+import SignupScreen from '@screens/auth/SignupScreen';
+import VerificationScreen from '@screens/auth/VerificationScreen';
 import { getToken, isAuth, setAuthentication } from '@store/reducers/authSlice';
+import { setUserData } from '@store/reducers/userSlice';
 import { setupStore } from '@store/store';
+import { AxiosError } from 'axios';
 import React, { useEffect } from 'react';
 import { Text } from 'react-native';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import LoginScreen from './screens/auth/LoginScreen';
-import SignupScreen from './screens/auth/SignupScreen';
-import VerificationScreen from './screens/auth/VerificationScreen';
-import TabBar from './screens/tabBar/tabBar';
-
 const { store, persistor } = setupStore();
 
 const Stack = createStackNavigator();
-/*
-
-// TODO: To initialize the store, you need to call :
-const { store, persistor } = setupStore();
-<Provider store={store}>
-	<PersistGate loading={<Text>Loading...</Text>} persistor={persistor}>
-		<View></View>
-	</PersistGate>
-</Provider>
-
-// TODO: To retrieve the data :
-import { useAppSelector } from '@hooks/redux';
-import { retrieveUsername } from '@store/reducers/userSlice';
-const username = useAppSelector(retrieveUsername);
-
-// TODO: To dispatch the data :
-import { useAppDispatch } from '@hooks/redux';
-import { setUsername } from '@store/reducers/userSlice';
-const dispatch = useAppDispatch();
-dispatch(serUsername("bob"));
-*/
 
 const App = () => {
 	const token = useAppSelector(getToken);
 	const isLoggedIn = useAppSelector(isAuth);
 	const dispatch = useAppDispatch();
 
-	console.log('token', token);
 	if (token) {
 		client.defaults.headers.common.Authorization = `Bearer ${token}`;
 	}
 
 	useEffect(() => {
 		const checkLoginStatus = async () => {
-			if (token) {
-				client.defaults.headers.common.Authorization = `Bearer ${token}`;
-			} else {
+			if (!token) {
+				dispatch(setAuthentication(false));
+				return;
+			}
+
+			client.defaults.headers.common.Authorization = `Bearer ${token}`;
+			try {
+				const res = await getMe();
+				dispatch(setUserData(res.data));
+			} catch (error) {
+				if (error instanceof AxiosError) {
+					console.error(error.response?.data);
+				}
 				dispatch(setAuthentication(false));
 			}
 		};
+
 		checkLoginStatus();
-	});
+	}, [token, dispatch]);
 
 	return (
 		<NavigationContainer>
@@ -70,7 +60,7 @@ const App = () => {
 				{isLoggedIn ? (
 					<Stack.Screen
 						name="TabBar"
-						component={TabBar}
+						component={AppNavigator}
 						options={{
 							gestureEnabled: false,
 						}}

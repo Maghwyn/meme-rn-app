@@ -2,6 +2,7 @@ import { loginUser } from '@api/auth.req';
 import { client } from '@api/network/client';
 import { useAppDispatch } from '@hooks/redux';
 import { setAuthentication, setToken } from '@store/reducers/authSlice';
+import { AxiosError } from 'axios';
 import React, { useState } from 'react';
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
@@ -28,7 +29,9 @@ const LoginScreen: LoginScreen = ({ navigation }) => {
 				navigation.navigate('TabBar');
 			}
 		} catch (error) {
-			console.log(error);
+			if (error instanceof AxiosError) {
+				console.log(error.response?.data);
+			}
 		}
 	};
 
