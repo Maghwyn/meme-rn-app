@@ -4,6 +4,7 @@ import type { Upload } from '@api/upload.req.type';
 import FeedBottomSheet from '@components/FeedBottomSheet';
 import FeedOverlay from '@components/FeedOverlay';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
+import useToast from '@hooks/toast';
 import type { AuthNavigation, AuthRoute } from '@navigations/types/navigation.type';
 import { retrieveMemes, setMemes, setNewLike } from '@store/reducers/memesSlice';
 import { retrieveUser, willViewUserProfileOf } from '@store/reducers/userSlice';
@@ -29,6 +30,8 @@ const FeedHomeScreen: FeedHomeScreen = ({ navigation }) => {
 	const dispatch = useAppDispatch();
 	const memes = useAppSelector(retrieveMemes);
 	const userData = useAppSelector(retrieveUser);
+
+	const { showToast } = useToast();
 
 	// TODO: Is called only once
 	useEffect(() => {
@@ -64,9 +67,18 @@ const FeedHomeScreen: FeedHomeScreen = ({ navigation }) => {
 					userId: userData.id!,
 				}),
 			);
+			showToast({
+				type: 'success',
+				text1: 'Like Success',
+				text2: 'You liked the meme!',
+			});
 		} catch (error) {
 			if (error instanceof AxiosError) {
-				console.error(error.response?.data);
+				showToast({
+					type: 'error',
+					text1: 'Error',
+					text2: 'Failed to like the meme. Please try again.',
+				});
 			}
 		}
 	};
@@ -88,7 +100,11 @@ const FeedHomeScreen: FeedHomeScreen = ({ navigation }) => {
 				}
 			} catch (err) {
 				// To handle permission related exception
-				console.warn(err);
+				showToast({
+					type: 'info',
+					text1: 'Storage Permission Error',
+					text2: 'To save the meme, please activate the storage permission !',
+				});
 			}
 		}
 
@@ -111,9 +127,21 @@ const FeedHomeScreen: FeedHomeScreen = ({ navigation }) => {
 						res.path(),
 					);
 				}
-				// TODO: Add toast
+				showToast({
+					type: 'success',
+					text1: 'Download Success',
+					text2: 'The meme has been downloaded!',
+				});
 			})
-			.catch((err) => console.log('BLOB ERROR -> ', JSON.stringify(err)));
+			.catch((err) => {
+				console.log('BLOB ERROR -> ', JSON.stringify(err));
+
+				showToast({
+					type: 'error',
+					text1: 'Download Failed',
+					text2: 'Failed to download the meme. Please try again.',
+				});
+			});
 	};
 
 	const navigateToAnotherUserProfile = async (userId: string) => {

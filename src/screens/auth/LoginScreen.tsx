@@ -1,6 +1,7 @@
 import { loginUser } from '@api/auth.req';
 import { client } from '@api/network/client';
 import { useAppDispatch } from '@hooks/redux';
+import useToast from '@hooks/toast';
 import { setAuthentication, setToken } from '@store/reducers/authSlice';
 import { AxiosError } from 'axios';
 import React, { useState } from 'react';
@@ -21,6 +22,8 @@ const LoginScreen: LoginScreen = ({ navigation }) => {
 
 	const dispatch = useAppDispatch();
 
+	const { showToast } = useToast();
+
 	const handleLogin = async () => {
 		try {
 			const res = await loginUser({ email, password });
@@ -28,6 +31,10 @@ const LoginScreen: LoginScreen = ({ navigation }) => {
 				dispatch(setToken(res.data));
 				dispatch(setAuthentication(true));
 				client.defaults.headers.common.Authorization = `Bearer ${res.data}`;
+				showToast({
+					type: 'success',
+					text1: 'Login Success !',
+				});
 				navigation.navigate('TabBar');
 			}
 		} catch (error) {

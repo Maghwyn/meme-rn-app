@@ -8,6 +8,7 @@ import ActivityComments from '@components/activities/ActivityComments';
 import ActivityLikes from '@components/activities/ActivityLikes';
 import ActivityMemes from '@components/activities/ActivityMemes';
 import UserProfileActivityButton from '@components/UserProfileActivityButton';
+import useToast from '@hooks/toast';
 import { AxiosError } from 'axios';
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
@@ -34,6 +35,8 @@ const UserProfileActivities: UserProfileActivities = ({ userId }) => {
 	const [userLikedMemes, setUserLikedMemes] = useState(Array<MemePreview>);
 	const [userComments, setUserComments] = useState(Array<MemeCommentPreview>);
 
+	const { showToast } = useToast();
+
 	useEffect(() => {
 		const fetchUserMemes = async () => {
 			try {
@@ -43,6 +46,11 @@ const UserProfileActivities: UserProfileActivities = ({ userId }) => {
 				if (error instanceof AxiosError) {
 					console.log(error.response?.data);
 				}
+				showToast({
+					type: 'error',
+					text1: 'Fetch Error',
+					text2: 'Failed to fetch user memes. Please try again.',
+				});
 			}
 		};
 		const fetchUserLikedMemes = async () => {
@@ -53,6 +61,11 @@ const UserProfileActivities: UserProfileActivities = ({ userId }) => {
 				if (error instanceof AxiosError) {
 					console.log(error.response?.data);
 				}
+				showToast({
+					type: 'error',
+					text1: 'Fetch Error',
+					text2: 'Failed to fetch user liked memes. Please try again.',
+				});
 			}
 		};
 		const fetchUserComments = async () => {
@@ -63,12 +76,17 @@ const UserProfileActivities: UserProfileActivities = ({ userId }) => {
 				if (error instanceof AxiosError) {
 					console.log(error.response?.data);
 				}
+				showToast({
+					type: 'error',
+					text1: 'Fetch Error',
+					text2: 'Failed to fetch user comments. Please try again.',
+				});
 			}
 		};
 		fetchUserMemes();
 		fetchUserLikedMemes();
 		fetchUserComments();
-	}, [userId]);
+	}, [showToast, userId]);
 
 	return (
 		<View style={styles.userActivity}>

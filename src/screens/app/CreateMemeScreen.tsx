@@ -117,6 +117,11 @@ const CreateMemeScreen: CreateMemeScreen = ({ navigation }) => {
 		} catch (error) {
 			if (error instanceof AxiosError) {
 				console.log(error.response?.data);
+				showToast({
+					type: 'error',
+					text1: 'Error',
+					text2: `Failed to upload meme file: ${error.response?.data}`,
+				});
 			}
 			return false;
 		}
