@@ -1,3 +1,4 @@
+import type { MemePreview } from '@api/memes.req.type';
 import ActivityComments from '@components/activities/ActivityComments';
 import ActivityLikes from '@components/activities/ActivityLikes';
 import ActivityMemes from '@components/activities/ActivityMemes';
@@ -8,6 +9,7 @@ import { StyleSheet } from 'react-native';
 
 type UserProfileActivitiesProps = {
 	userId: string;
+	userMemes: Array<MemePreview>;
 };
 
 type UserProfileActivities = {
@@ -20,7 +22,7 @@ enum ProfileTabFilter {
 	COMMENTS,
 }
 
-const UserProfileActivities: UserProfileActivities = ({ userId }) => {
+const UserProfileActivities: UserProfileActivities = ({ userId, userMemes }) => {
 	const [filter, setFilter] = useState<ProfileTabFilter>(ProfileTabFilter.MEMES);
 	console.log(userId);
 	// TODO: Use the userId to fetch the memes, likes, comments from the filter
@@ -45,7 +47,7 @@ const UserProfileActivities: UserProfileActivities = ({ userId }) => {
 				/>
 			</View>
 			<View>
-				{filter === ProfileTabFilter.MEMES && <ActivityMemes />}
+				{filter === ProfileTabFilter.MEMES && <ActivityMemes memes={userMemes} />}
 				{filter === ProfileTabFilter.LIKES && <ActivityLikes />}
 				{filter === ProfileTabFilter.COMMENTS && <ActivityComments />}
 			</View>
