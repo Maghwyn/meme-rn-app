@@ -1,4 +1,4 @@
-import { retrieveUserMemeCreated } from '@api/memes.req';
+import { retrieveUserMemeCreated, retrieveUserMemeLikes } from '@api/memes.req';
 import type { MemePreview } from '@api/memes.req.type';
 import { getUserById } from '@api/user.req';
 import UserProfileActivities from '@components/UserProfileActivities';
@@ -32,6 +32,7 @@ const UserProfileScreen: UserProfileScreen = ({ navigation }) => {
 	const profileUserId = useAppSelector(retrieveUserProfileId);
 
 	const [userMemes, setUserMemes] = useState(Array<MemePreview>);
+	const [userLikedMemes, setUserLikedMemes] = useState(Array<MemePreview>);
 
 	useEffect(() => {
 		const unsubscribeBlur = navigation.addListener('blur', () => {
@@ -75,7 +76,16 @@ const UserProfileScreen: UserProfileScreen = ({ navigation }) => {
 				console.error(error.response?.data);
 			}
 		};
+		const fetchUserLikedMemes = async () => {
+			try {
+				const res = await retrieveUserMemeLikes(userData.id);
+				setUserLikedMemes(res.data);
+			} catch (error) {
+				console.error(error.response?.data);
+			}
+		};
 		fetchUserMemes();
+		fetchUserLikedMemes();
 	}, [dispatch, userData.id]);
 
 	console.log(userMemes);
@@ -86,6 +96,7 @@ const UserProfileScreen: UserProfileScreen = ({ navigation }) => {
 			<UserProfileActivities
 				userId={profileUserId || (userData.id as string)}
 				userMemes={userMemes}
+				userLikedMemes={userLikedMemes}
 			/>
 		</View>
 	);

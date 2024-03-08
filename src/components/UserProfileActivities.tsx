@@ -10,6 +10,7 @@ import { StyleSheet } from 'react-native';
 type UserProfileActivitiesProps = {
 	userId: string;
 	userMemes: Array<MemePreview>;
+	userLikedMemes: Array<MemePreview>;
 };
 
 type UserProfileActivities = {
@@ -22,7 +23,7 @@ enum ProfileTabFilter {
 	COMMENTS,
 }
 
-const UserProfileActivities: UserProfileActivities = ({ userId, userMemes }) => {
+const UserProfileActivities: UserProfileActivities = ({ userId, userMemes, userLikedMemes }) => {
 	const [filter, setFilter] = useState<ProfileTabFilter>(ProfileTabFilter.MEMES);
 	console.log(userId);
 	// TODO: Use the userId to fetch the memes, likes, comments from the filter
@@ -48,7 +49,7 @@ const UserProfileActivities: UserProfileActivities = ({ userId, userMemes }) => 
 			</View>
 			<View>
 				{filter === ProfileTabFilter.MEMES && <ActivityMemes memes={userMemes} />}
-				{filter === ProfileTabFilter.LIKES && <ActivityLikes />}
+				{filter === ProfileTabFilter.LIKES && <ActivityLikes likedMemes={userLikedMemes} />}
 				{filter === ProfileTabFilter.COMMENTS && <ActivityComments />}
 			</View>
 		</View>
