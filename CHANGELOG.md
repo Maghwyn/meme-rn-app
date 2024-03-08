@@ -1,3 +1,12 @@
+# [1.0.0-dev.11](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.10...v1.0.0-dev.11) (2024-03-08)
+
+
+### Features
+
+* **bottomsheet:** Upgrade the bottom sheet with a design ([b26c92d](https://github.com/Maghwyn/meme-rn-app/commit/b26c92d70b52985ac2f2c97def82caf53842c7c7))
+* **screens:** Improve the ui and the reactivity across the screen ([ba378d4](https://github.com/Maghwyn/meme-rn-app/commit/ba378d4d7032ec2680a466cf67baef85f2f9a413))
+* **theme:** Fix the navbar theme to dark across all the app ([22d5bd8](https://github.com/Maghwyn/meme-rn-app/commit/22d5bd843d45d241a4a4ca058e2f028b728fc65a))
+
 # [1.0.0-dev.10](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.9...v1.0.0-dev.10) (2024-03-08)
 
 
