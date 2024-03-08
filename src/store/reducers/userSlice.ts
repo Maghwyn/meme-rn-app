@@ -5,12 +5,12 @@ import type { RootState } from '@store/store';
 
 export interface UserState {
 	value: Partial<User>;
-	anotherUserId: string;
+	profileId: string;
 }
 
 const initialState: UserState = {
 	value: {},
-	anotherUserId: '',
+	profileId: '',
 };
 
 export const userSlice = createSlice({
@@ -21,12 +21,12 @@ export const userSlice = createSlice({
 			state.value = action.payload;
 		},
 		willViewUserProfileOf: (state, action: PayloadAction<string>) => {
-			state.anotherUserId = action.payload;
+			state.profileId = action.payload;
 		},
 	},
 });
 
 export const { setUserData, willViewUserProfileOf } = userSlice.actions;
 export const retrieveUser = (state: RootState) => state.user;
-export const getAnotherUserId = (state: RootState) => state.user.anotherUserId;
+export const retrieveUserProfileId = (state: RootState) => state.user.profileId;
 export default userSlice.reducer;

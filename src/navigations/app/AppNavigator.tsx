@@ -6,7 +6,7 @@ import TouchButton from '@navigations/app/TouchButton';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import CreateMemeScreen from '@screens/app/CreateMemeScreen';
 import FeedHomeScreen from '@screens/app/FeedHomeScreen';
-import UserProfileScreen from '@screens/profile/UserProfileScreen';
+import UserProfileScreen from '@screens/app/UserProfileScreen';
 import React, { useEffect, useState } from 'react';
 import { Keyboard, StyleSheet, View } from 'react-native';
 
