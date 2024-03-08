@@ -33,29 +33,42 @@ const SignupScreen: SignupScreen = ({ navigation }) => {
 
 	return (
 		<View style={styles.container}>
-			<TextInput
-				style={styles.input}
-				placeholder="Pseudo"
-				value={username}
-				onChangeText={setUsername}
-				placeholderTextColor="#B0B0B0"
-			/>
-			<TextInput
-				style={styles.input}
-				placeholder="Email"
-				value={email}
-				onChangeText={setEmail}
-				placeholderTextColor="#B0B0B0"
-			/>
-			<TextInput
-				style={styles.input}
-				placeholder="Password"
-				secureTextEntry
-				value={password}
-				onChangeText={setPassword}
-				placeholderTextColor="#B0B0B0"
-			/>
-			<TouchableOpacity style={styles.loginButton} onPress={handleSignup}>
+			<Text style={styles.title}>Sign in as a new user</Text>
+			<View style={styles.inputContainer}>
+				<Text style={styles.label}>Your username</Text>
+				<TextInput
+					placeholder="jhon.doe"
+					placeholderTextColor="gray"
+					style={styles.input}
+					value={username}
+					autoCapitalize="none"
+					onChangeText={setUsername}
+				/>
+			</View>
+			<View style={styles.inputContainer}>
+				<Text style={styles.label}>Your email</Text>
+				<TextInput
+					placeholder="jhon.doe@gmail.com"
+					placeholderTextColor="gray"
+					style={styles.input}
+					value={email}
+					autoCapitalize="none"
+					onChangeText={setEmail}
+				/>
+			</View>
+			<View style={styles.inputContainer}>
+				<Text style={styles.label}>Your password</Text>
+				<TextInput
+					placeholder="**********"
+					placeholderTextColor="gray"
+					style={styles.input}
+					value={password}
+					secureTextEntry
+					autoCapitalize="none"
+					onChangeText={setPassword}
+				/>
+			</View>
+			<TouchableOpacity style={styles.signupButton} onPress={handleSignup}>
 				<Text style={styles.signupText}>Créer un compte</Text>
 			</TouchableOpacity>
 		</View>
@@ -67,16 +80,36 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		padding: 16,
-		backgroundColor: 'black',
+		backgroundColor: 'rgba(0,0,0,0.8)',
+	},
+	label: {
+		fontSize: 16,
+		fontWeight: 'bold',
+		marginVertical: 8,
+		color: 'gray',
+		alignSelf: 'flex-start',
+	},
+	inputContainer: {
+		display: 'flex',
+		alignSelf: 'stretch',
+		flexDirection: 'column',
+		paddingBottom: 10,
 	},
 	input: {
 		height: 40,
-		borderColor: 'white',
+		borderColor: 'gray',
+		color: 'lightgray',
 		borderWidth: 1,
-		marginBottom: 12,
-		paddingHorizontal: 8,
-		color: 'white',
-		borderRadius: 10,
+		borderRadius: 8,
+		padding: 8,
+		marginRight: 8,
+		width: '100%',
+	},
+	title: {
+		fontSize: 24,
+		fontWeight: 'bold',
+		marginBottom: 16,
+		color: 'lightgray',
 	},
 	button: {
 		backgroundColor: 'black',
@@ -93,12 +126,13 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		fontWeight: 'bold',
 	},
-	loginButton: {
-		backgroundColor: 'black',
+	signupButton: {
+		marginTop: 30,
+		backgroundColor: '#9c080b',
 		borderRadius: 10,
-		borderColor: 'white',
-		borderWidth: 2,
-		margin: 20,
+		paddingVertical: 12,
+		paddingHorizontal: 24,
+		marginBottom: 12,
 	},
 	back: {
 		textAlign: 'center',

@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'column',
 		alignSelf: 'stretch',
 		paddingHorizontal: 20,
-		backgroundColor: 'rgba(220,220,220,1)',
+		backgroundColor: 'rgba(0,0,0,0.4)',
 		flex: 1,
 		gap: 5,
 	},

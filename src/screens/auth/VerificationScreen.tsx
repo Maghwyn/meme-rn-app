@@ -76,14 +76,13 @@ const VerificationScreen: VerificationScreen = ({ navigation }) => {
 						placeholder="0"
 						value={digit}
 						onChangeText={(text) => handleChangeText(text, index)}
-						keyboardType="numeric"
 						maxLength={1}
 						placeholderTextColor="#B0B0B0"
 					/>
 				))}
 			</View>
-			<TouchableOpacity style={styles.loginButton} onPress={handleVerification}>
-				<Text style={styles.signupText}>Vérifier</Text>
+			<TouchableOpacity style={styles.verifyButton} onPress={handleVerification}>
+				<Text style={styles.verifyText}>Verify code</Text>
 			</TouchableOpacity>
 			<Text style={styles.reSend} onPress={() => navigation.navigate('Signup')}>
 				Renvoyer le code ?
@@ -135,7 +134,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		padding: 16,
-		backgroundColor: 'black',
+		backgroundColor: 'rgba(0,0,0,0.8)',
 	},
 	codeInputContainer: {
 		flexDirection: 'row',
@@ -145,29 +144,30 @@ const styles = StyleSheet.create({
 	codeInput: {
 		height: 40,
 		width: 40,
-		borderColor: 'white',
+		borderColor: 'gray',
 		borderWidth: 1,
 		textAlign: 'center',
-		color: 'white',
+		color: 'lightgray',
 		backgroundColor: 'black',
 		borderRadius: 10,
 	},
-	signupText: {
+	verifyText: {
 		color: 'white',
 		textAlign: 'center',
 		fontSize: 16,
 		fontWeight: 'bold',
 	},
-	loginButton: {
-		backgroundColor: 'black',
+	verifyButton: {
+		marginTop: 30,
+		backgroundColor: '#9c080b',
 		borderRadius: 10,
-		borderColor: 'white',
-		borderWidth: 2,
-		margin: 20,
+		paddingVertical: 12,
+		paddingHorizontal: 24,
+		marginBottom: 12,
 	},
 	reSend: {
 		textAlign: 'center',
-		color: 'white',
+		color: 'lightgray',
 		margin: 20,
 	},
 });

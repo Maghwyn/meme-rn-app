@@ -66,7 +66,7 @@ const FeedBottomSheet: FeedBottomSheet = ({ visible, memeId, onClose }) => {
 		<BottomSheet
 			ref={bottomSheetRef}
 			index={-1}
-			snapPoints={['25%', '50%', '75%', '80%']}
+			snapPoints={['25%', '50%', '75%', '85%']}
 			backdropComponent={renderBackdrop}
 			enablePanDownToClose={false}
 			enableContentPanningGesture={false}

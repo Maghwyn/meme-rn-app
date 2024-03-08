@@ -136,6 +136,7 @@ const CreateMemeScreen: CreateMemeScreen = ({ navigation }) => {
 					style={styles.input}
 					value={title}
 					onChangeText={setTitle}
+					autoCapitalize="none"
 				/>
 
 				<Text style={styles.label}>Category</Text>
@@ -145,6 +146,7 @@ const CreateMemeScreen: CreateMemeScreen = ({ navigation }) => {
 					style={styles.input}
 					value={selectedCategory}
 					onChangeText={setSelectedCategory}
+					autoCapitalize="none"
 				/>
 			</View>
 
@@ -177,7 +179,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		padding: 16,
-		backgroundColor: 'rgba(0,0,0,0.9)',
+		backgroundColor: 'rgba(0,0,0,0.8)',
 	},
 	formContainer: {
 		padding: 16,
