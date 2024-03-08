@@ -1,3 +1,10 @@
+# [1.0.0-dev.15](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.14...v1.0.0-dev.15) (2024-03-08)
+
+
+### Bug Fixes
+
+* **user-profile:** Redirect to a user profile when pressing a comment for a long time ([bbe716f](https://github.com/Maghwyn/meme-rn-app/commit/bbe716fa43a7bc5e8ccb96b3330d7e159f25f673))
+
 # [1.0.0-dev.14](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.13...v1.0.0-dev.14) (2024-03-08)
 
 
