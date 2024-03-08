@@ -1,3 +1,10 @@
+# [1.0.0-dev.17](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.16...v1.0.0-dev.17) (2024-03-08)
+
+
+### Bug Fixes
+
+* **login:** Fix the merge issues that caused some files to be deleted ([c4c62da](https://github.com/Maghwyn/meme-rn-app/commit/c4c62da9181ccf4681e1eb0fdb67de191f549f06))
+
 # [1.0.0-dev.16](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.15...v1.0.0-dev.16) (2024-03-08)
 
 
