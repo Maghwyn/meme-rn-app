@@ -13,6 +13,7 @@ type FeedOverlayProps = {
 	onCommentPress: () => void;
 	onLikePress: () => void;
 	onDownloadPress: () => void;
+	onProfilePress: () => void;
 };
 
 type FeedOverlay = {
@@ -28,7 +29,9 @@ const FeedOverlay: FeedOverlay = ({
 	onCommentPress,
 	onLikePress,
 	onDownloadPress,
+	onProfilePress,
 }) => {
+	console.log(liked);
 	return (
 		<View style={styles.overlay}>
 			<LinearGradient
@@ -42,7 +45,9 @@ const FeedOverlay: FeedOverlay = ({
 			</LinearGradient>
 			<View style={styles.container}>
 				<View style={styles.infoContainer}>
-					<Text style={styles.username}>By {username}</Text>
+					<TouchableOpacity onPress={onProfilePress}>
+						<Text style={styles.username}>By {username}</Text>
+					</TouchableOpacity>
 					<Text style={styles.date}>{new Date(createdAt).toDateString()}</Text>
 				</View>
 				<View style={styles.actionContainer}>

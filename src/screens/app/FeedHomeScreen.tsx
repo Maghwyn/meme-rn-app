@@ -4,27 +4,31 @@ import type { Upload } from '@api/upload.req.type';
 import FeedBottomSheet from '@components/FeedBottomSheet';
 import FeedOverlay from '@components/FeedOverlay';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
+import type { AuthNavigation, AuthRoute } from '@navigations/types/navigation.type';
 import { retrieveMemes, setMemes, setNewLike } from '@store/reducers/memesSlice';
+import { retrieveUser, willViewUserProfileOf } from '@store/reducers/userSlice';
 import { AxiosError } from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Image, PermissionsAndroid, Platform, StyleSheet, View } from 'react-native';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 import Swiper from 'react-native-swiper';
 
-interface FeedScreenProps {
-	navigation: any;
+interface FeedHomeScreenProps {
+	navigation: AuthNavigation;
+	route: AuthRoute;
 }
 
-type FeedScreen = {
-	(props: FeedScreenProps): React.JSX.Element;
+type FeedHomeScreen = {
+	(props: FeedHomeScreenProps): React.JSX.Element;
 };
 
-const FeedScreen: FeedScreen = () => {
+const FeedHomeScreen: FeedHomeScreen = ({ navigation }) => {
 	const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
 	const [currentMemeId, setCurrentMemeId] = useState('');
 
 	const dispatch = useAppDispatch();
 	const memes = useAppSelector(retrieveMemes);
+	const userData = useAppSelector(retrieveUser);
 
 	// TODO: Is called only once
 	useEffect(() => {
@@ -53,12 +57,11 @@ const FeedScreen: FeedScreen = () => {
 	const onLikePress = async (id: string) => {
 		try {
 			const res = await toggleLike(id);
-			// TODO: Fix randomId
 			dispatch(
 				setNewLike({
 					id,
 					liked: res.data,
-					userId: 'random ID' /** Retrieve from user store */,
+					userId: userData.value.id!,
 				}),
 			);
 		} catch (error) {
@@ -113,6 +116,11 @@ const FeedScreen: FeedScreen = () => {
 			.catch((err) => console.log('BLOB ERROR -> ', JSON.stringify(err)));
 	};
 
+	const navigateToAnotherUserProfile = async (userId: string) => {
+		dispatch(willViewUserProfileOf(userId));
+		navigation.navigate('UserProfile');
+	};
+
 	return (
 		<View style={{ flex: 1 }}>
 			<Swiper
@@ -130,10 +138,11 @@ const FeedScreen: FeedScreen = () => {
 							username={meme.username}
 							category={meme.category}
 							createdAt={meme.createdAt}
-							liked={meme.likes.includes(meme.id)}
+							liked={meme.likes.includes(userData.value.id!)}
 							onCommentPress={() => onCommentPress(meme.id)}
 							onLikePress={() => onLikePress(meme.id)}
 							onDownloadPress={() => onDownloadPress(meme.upload)}
+							onProfilePress={() => navigateToAnotherUserProfile(meme.userId)}
 						/>
 					</View>
 				))}
@@ -158,97 +167,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		height: '100%',
 	},
-	overlay: {
-		...StyleSheet.absoluteFillObject,
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'flex-end',
-		padding: 16,
-	},
-	commentButton: {
-		backgroundColor: 'white',
-		padding: 8,
-		borderRadius: 8,
-		alignItems: 'center',
-	},
-	commentButtonText: {
-		color: 'black',
-	},
-	infoContainer: {
-		justifyContent: 'flex-start',
-		maxWidth: '70%',
-	},
-	username: {
-		fontSize: 16,
-		fontWeight: 'bold',
-		color: 'white',
-		marginBottom: 4,
-	},
-	title: {
-		fontSize: 18,
-		fontWeight: 'bold',
-		color: 'white',
-		marginBottom: 4,
-	},
-	category: {
-		fontSize: 16,
-		color: 'white',
-		marginBottom: 4,
-	},
-	date: {
-		fontSize: 14,
-		color: 'white',
-		marginBottom: 4,
-	},
-	bottomSheetContent: {
-		backgroundColor: 'white',
-		padding: 16,
-	},
-	commentItem: {
-		borderBottomWidth: 1,
-		borderBottomColor: '#ddd',
-		padding: 8,
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-	},
-	addCommentContainer: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		marginTop: 16,
-	},
-	commentInput: {
-		flex: 1,
-		height: 40,
-		borderColor: 'gray',
-		borderWidth: 1,
-		borderRadius: 8,
-		padding: 8,
-		marginRight: 8,
-	},
-	addCommentButton: {
-		color: 'blue',
-		fontSize: 16,
-		fontWeight: 'bold',
-	},
-	closeButton: {
-		marginTop: 16,
-		backgroundColor: 'red',
-		padding: 12,
-		borderRadius: 8,
-		alignItems: 'center',
-	},
-	closeButtonText: {
-		color: 'white',
-		fontSize: 16,
-		fontWeight: 'bold',
-	},
-	bottomSheetMessage: {
-		backgroundColor: 'black',
-		flex: 1,
-		width: 100,
-		height: 100,
-		flexDirection: 'column',
-	},
 });
 
-export default FeedScreen;
+export default FeedHomeScreen;

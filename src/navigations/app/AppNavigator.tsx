@@ -4,9 +4,9 @@ import ProfileSvg from '@assets/profile';
 import NavigatorIcon from '@navigations/app/NavigatorIcon';
 import TouchButton from '@navigations/app/TouchButton';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import FeedScreen from '@screens/app/FeedScreen';
+import FeedHomeScreen from '@screens/app/FeedHomeScreen';
 import CreateMemeScreen from '@screens/meme/CreateMemeScreen';
-import ProfileScreen from '@screens/profile/UserProfile';
+import UserProfileScreen from '@screens/profile/UserProfileScreen';
 import React, { useEffect, useState } from 'react';
 import { Keyboard, StyleSheet, View } from 'react-native';
 
@@ -62,8 +62,9 @@ const AppNavigator = () => {
 			}}
 		>
 			<App.Screen
-				name="Feed"
-				component={FeedScreen}
+				name="HomeFeed"
+				// @ts-ignore Lib has shit types, unless we can extend in a .d.ts
+				component={FeedHomeScreen}
 				options={{
 					headerShown: false,
 					tabBarIcon: ({ focused, size }) => (
@@ -75,6 +76,7 @@ const AppNavigator = () => {
 			/>
 			<App.Screen
 				name="CreateMeme"
+				// @ts-ignore Lib has shit types, unless we can extend in a .d.ts
 				component={CreateMemeScreen}
 				options={{
 					headerShown: false,
@@ -87,8 +89,9 @@ const AppNavigator = () => {
 				}}
 			/>
 			<App.Screen
-				name="Profile"
-				component={ProfileScreen}
+				name="UserProfile"
+				// @ts-ignore Lib has shit types, unless we can extend in a .d.ts
+				component={UserProfileScreen}
 				options={{
 					headerShown: false,
 					tabBarIcon: ({ focused, size }) => (

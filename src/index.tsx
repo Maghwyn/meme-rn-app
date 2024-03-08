@@ -10,6 +10,7 @@ import VerificationScreen from '@screens/auth/VerificationScreen';
 import { getToken, isAuth, setAuthentication } from '@store/reducers/authSlice';
 import { setUserData } from '@store/reducers/userSlice';
 import { setupStore } from '@store/store';
+import { AxiosError } from 'axios';
 import React, { useEffect } from 'react';
 import { Text } from 'react-native';
 import { Provider } from 'react-redux';
@@ -30,18 +31,19 @@ const App = () => {
 
 	useEffect(() => {
 		const checkLoginStatus = async () => {
-			if (token) {
-				client.defaults.headers.common.Authorization = `Bearer ${token}`;
-				try {
-					const res = await getMe();
-					if (res.status === 200) {
-						dispatch(setUserData(res.data));
-					}
-				} catch (error) {
-					console.error(error.response);
-					dispatch(setAuthentication(false));
+			if (!token) {
+				dispatch(setAuthentication(false));
+				return;
+			}
+
+			client.defaults.headers.common.Authorization = `Bearer ${token}`;
+			try {
+				const res = await getMe();
+				dispatch(setUserData(res.data));
+			} catch (error) {
+				if (error instanceof AxiosError) {
+					console.error(error.response?.data);
 				}
-			} else {
 				dispatch(setAuthentication(false));
 			}
 		};
