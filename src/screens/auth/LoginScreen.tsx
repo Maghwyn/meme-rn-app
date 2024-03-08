@@ -39,7 +39,10 @@ const LoginScreen: LoginScreen = ({ navigation }) => {
 		<View style={styles.container}>
 			<View style={styles.logoContainer}>
 				<View style={styles.logoWrapper}>
-					<Image source={require('./../../../assets/icon.png')} style={styles.logo} />
+					<Image
+						source={require('./../../../assets/logo-remove.png')}
+						style={styles.logo}
+					/>
 				</View>
 			</View>
 			<Text style={styles.title}>Connectez-vous</Text>
@@ -90,14 +93,12 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		borderWidth: 2,
-		borderColor: 'red',
 	},
 	logo: {
-		width: 80,
-		height: 80,
+		width: 250,
+		height: 250,
 		borderRadius: 40,
 		borderWidth: 2,
-		borderColor: 'red',
 	},
 	title: {
 		fontSize: 24,
