@@ -13,13 +13,14 @@ type FeedBottomSheetProps = {
 	visible: boolean;
 	memeId: string;
 	onClose: () => void;
+	onRedirectToProfile: (userId: string) => void;
 };
 
 type FeedBottomSheet = {
 	(props: FeedBottomSheetProps): React.JSX.Element;
 };
 
-const FeedBottomSheet: FeedBottomSheet = ({ visible, memeId, onClose }) => {
+const FeedBottomSheet: FeedBottomSheet = ({ visible, memeId, onClose, onRedirectToProfile }) => {
 	const [newComment, setNewComment] = useState('');
 	const bottomSheetRef = useRef<BottomSheet>(null);
 	const dispatch = useAppDispatch();
@@ -90,7 +91,11 @@ const FeedBottomSheet: FeedBottomSheet = ({ visible, memeId, onClose }) => {
 				<View style={styles.addCommentContainer}>
 					<ScrollView contentContainerStyle={{ gap: 10, paddingBottom: 350 }}>
 						{comments.map((item, index) => (
-							<FeedComment key={index} item={item} />
+							<FeedComment
+								key={index}
+								item={item}
+								onRedirectToProfile={onRedirectToProfile}
+							/>
 						))}
 					</ScrollView>
 				</View>

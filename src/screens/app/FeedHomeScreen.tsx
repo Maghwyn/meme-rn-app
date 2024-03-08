@@ -144,7 +144,7 @@ const FeedHomeScreen: FeedHomeScreen = ({ navigation }) => {
 			});
 	};
 
-	const navigateToAnotherUserProfile = async (userId: string) => {
+	const navigateToAnotherUserProfile = (userId: string) => {
 		dispatch(willViewUserProfileOf(userId));
 		navigation.navigate('UserProfile');
 	};
@@ -179,6 +179,7 @@ const FeedHomeScreen: FeedHomeScreen = ({ navigation }) => {
 				visible={isBottomSheetVisible}
 				memeId={currentMemeId}
 				onClose={onClose}
+				onRedirectToProfile={navigateToAnotherUserProfile}
 			/>
 		</View>
 	);
