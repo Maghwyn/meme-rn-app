@@ -1,3 +1,21 @@
+# [1.0.0-dev.14](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.13...v1.0.0-dev.14) (2024-03-08)
+
+
+### Bug Fixes
+
+* **memes-types:** Fix meme request types for get alll user created memes & liked memes ([6f6c0f6](https://github.com/Maghwyn/meme-rn-app/commit/6f6c0f6e5b22fe3a7124cd0c155f8843b80455ff))
+* **toasts:** Display more toast in app screens ([c32f23f](https://github.com/Maghwyn/meme-rn-app/commit/c32f23f27160400cb52780b5515bc723e5bdc772))
+
+
+### Features
+
+* **activity-comments:** Display user comments in user profil screen ([265a44e](https://github.com/Maghwyn/meme-rn-app/commit/265a44ef73727302e9dce547e9f0e4185cf27219))
+* **create-meme:** New menu dropdown for categories meme in creation meme screen ([102098b](https://github.com/Maghwyn/meme-rn-app/commit/102098bdb019e326854038bc343751861f367589))
+* **liked-memes:** Display all user liked meme in user profil ([ac23b96](https://github.com/Maghwyn/meme-rn-app/commit/ac23b966a3a7c3ed2577a4bdd76884964d12023c))
+* **login:** Display / unshow password in login screen ([d63f179](https://github.com/Maghwyn/meme-rn-app/commit/d63f1793bbd406e1a4811d12348e9b4b39fe1dee))
+* **toast:** Display toast in create meme screen ([557696a](https://github.com/Maghwyn/meme-rn-app/commit/557696a1d7fdf5fccb5e31fbf33b7e9cd7dfe637))
+* **user-memes:** Display all user created meme ([44e7053](https://github.com/Maghwyn/meme-rn-app/commit/44e705330b4383c4be4cd70fab3814eeb471518f))
+
 # [1.0.0-dev.13](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.12...v1.0.0-dev.13) (2024-03-08)
 
 
