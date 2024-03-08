@@ -1,3 +1,33 @@
+# [1.0.0-dev.10](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.9...v1.0.0-dev.10) (2024-03-08)
+
+
+### Bug Fixes
+
+* **create-meme:** Fix the missing types and verify the data before sending it ([a7d1129](https://github.com/Maghwyn/meme-rn-app/commit/a7d11297d2bf9904ee7a471879cb421455e3863d))
+* **index:** Fix the import, change the navigator compoenent ([17176a8](https://github.com/Maghwyn/meme-rn-app/commit/17176a876b7f9ee584932cef36e0ae530a4c8794))
+* **misc:** Resolve types errors, resolve missing logic, remove duplicated files and clean the code ([ffaae0d](https://github.com/Maghwyn/meme-rn-app/commit/ffaae0d2f83b18ffde6ca55cfc9f75897e733b6a))
+* **navigation:** Fix the navigation for the create meme screen ([6cf73c6](https://github.com/Maghwyn/meme-rn-app/commit/6cf73c6bed74458e54599b29285c8352ed5e1fa4))
+* **store:** Add a few more properties to manage the reactivity ([812d237](https://github.com/Maghwyn/meme-rn-app/commit/812d237e907b35a34afb4186f8d4494ba63e4e90))
+* **typescript:** Fix ts errors ([80ba047](https://github.com/Maghwyn/meme-rn-app/commit/80ba047d4928ea96800711295593182d9ae823a5))
+* **user-profile:** Remove the folder profile and fix the styling of the page ([9e263b6](https://github.com/Maghwyn/meme-rn-app/commit/9e263b635d7567bdacfc329412fb3f30c6e21012))
+
+
+### Features
+
+* **api:** Implement the new version of the api and fix the types ([7ab0827](https://github.com/Maghwyn/meme-rn-app/commit/7ab08275842fede147eac9c169549e1dfe2d9d52))
+* **assets:** Implement a few new svg ([6d17a0f](https://github.com/Maghwyn/meme-rn-app/commit/6d17a0f80d41dd7d7c7b7d6ecbc0e9e73285a117))
+* **components:** Create the components folder, move the old tabbar away and split the feed into components files ([0253faf](https://github.com/Maghwyn/meme-rn-app/commit/0253faf9365596637867637597244489a6a93a3c))
+* **meme-list-comment:** show comment ([2c3389c](https://github.com/Maghwyn/meme-rn-app/commit/2c3389c2d4f4983649ffa0c19a9bd989e95fd6b6))
+* **meme-list-comment:** show image and meme,send comment ([a8c2c5e](https://github.com/Maghwyn/meme-rn-app/commit/a8c2c5e8b9d478911b68d0101e0dfb7c99219d71))
+* **module:** Add the components and assets module for the path resolver ([1e76ec7](https://github.com/Maghwyn/meme-rn-app/commit/1e76ec71f764483e2ed4dd640341cf6b20b9154a))
+* **navigation:** Implement a new navigation element and rework its design ([03742c0](https://github.com/Maghwyn/meme-rn-app/commit/03742c02bb3159edc9a204cfd708ef55467608c8))
+* **store:** Implement the logic to update reactively the like of a meme ([1a5cb1f](https://github.com/Maghwyn/meme-rn-app/commit/1a5cb1f1e2838e1f07a001246484aae1dad79297))
+* **user-data:** Fetch another user data by another user id ([63c1815](https://github.com/Maghwyn/meme-rn-app/commit/63c181575011fbc83665f2781da22abd4128f4b7))
+* **user-data:** Get user data logged & display it in profil screen ([70b5a2c](https://github.com/Maghwyn/meme-rn-app/commit/70b5a2c65e586132d527ee2127c109326642d19f))
+* **user:** Requests & request type for get me & get user by id ([ad4e7a7](https://github.com/Maghwyn/meme-rn-app/commit/ad4e7a7fb7746b7ba8d188db977512c9db3afcb2))
+* **user:** Requests & request type for get me & get user by id ([b603fc5](https://github.com/Maghwyn/meme-rn-app/commit/b603fc58ad7d717d1f11c8b0b260af7a887ed5e9))
+* **user:** Requests & request type for get me & get user by id ([cb39596](https://github.com/Maghwyn/meme-rn-app/commit/cb3959656954907ff2ea65af4faa6568040c0db1))
+
 # [1.0.0-dev.9](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.8...v1.0.0-dev.9) (2024-03-07)
 
 
