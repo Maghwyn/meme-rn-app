@@ -11,6 +11,8 @@ import FeedScreen from '../../screens/feed/feedScreen';
 const Tab = createBottomTabNavigator();
 
 const TabBar = () => {
+	console.warn('Deprecated: This component is not used anymore and will be removed soon');
+
 	return (
 		<Tab.Navigator
 			screenOptions={({ route }) => ({
