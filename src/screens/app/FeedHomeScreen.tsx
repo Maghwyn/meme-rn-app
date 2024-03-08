@@ -11,8 +11,11 @@ import { retrieveUser, willViewUserProfileOf } from '@store/reducers/userSlice';
 import { AxiosError } from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Image, PermissionsAndroid, Platform, StyleSheet, View } from 'react-native';
+import { LogBox } from 'react-native';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 import Swiper from 'react-native-swiper';
+LogBox.ignoreLogs(['Warning: ...']);
+LogBox.ignoreAllLogs();
 
 interface FeedHomeScreenProps {
 	navigation: AuthNavigation;
