@@ -9,6 +9,7 @@ import { isEmpty } from '@utils/string.helper';
 import { AxiosError } from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import DropDownPicker from 'react-native-dropdown-picker';
 import {
 	type Asset,
 	type ImageLibraryOptions,
@@ -30,6 +31,21 @@ const CreateMemeScreen: CreateMemeScreen = ({ navigation }) => {
 	const [selectedCategory, setSelectedCategory] = useState<MemeCategory>('');
 	const [uploadedImage, setUplodadImage] = useState('');
 	const [uploadState, setUploadState] = useState<'loading' | 'idling'>('idling');
+
+	const [open, setOpen] = useState(false);
+	const [items, setItems] = useState([
+		{ label: 'twitter', value: 'twitter' },
+		{ label: 'joke', value: 'joke' },
+		{ label: 'cartoon', value: 'cartoon' },
+		{ label: 'troll', value: 'troll' },
+		{ label: 'cat', value: 'cat' },
+		{ label: 'sport', value: 'sport' },
+		{ label: 'music', value: 'music' },
+		{ label: 'dev', value: 'dev' },
+		{ label: 'anime', value: 'anime' },
+		{ label: 'cinema', value: 'cinema' },
+		{ label: 'animals', value: 'animals' },
+	]);
 
 	const { showToast } = useToast();
 
@@ -158,12 +174,14 @@ const CreateMemeScreen: CreateMemeScreen = ({ navigation }) => {
 				/>
 
 				<Text style={styles.label}>Category</Text>
-				<TextInput
-					placeholder="Enter a category..."
-					placeholderTextColor="gray"
-					style={styles.input}
+				<DropDownPicker
+					open={open}
 					value={selectedCategory}
-					onChangeText={setSelectedCategory}
+					items={items}
+					setOpen={setOpen}
+					setValue={setSelectedCategory}
+					setItems={setItems}
+					placeholder={'Choose a category'}
 				/>
 			</View>
 
