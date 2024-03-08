@@ -6,7 +6,7 @@ export type Meme = {
 	title: string;
 	username: string;
 	category: string;
-	upload: Upload; // TODO: Return pictureUrl instead
+	upload: Upload;
 	likes: Array<string>;
 	comments: Array<Comment>;
 	updatedAt: string;

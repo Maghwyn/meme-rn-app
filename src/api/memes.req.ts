@@ -25,7 +25,7 @@ export const createMemeComment = (id: MemeId, payload: NewMemeCommentPayload) =>
 };
 
 export const toggleLike = (id: MemeId) => {
-	return client.post<undefined>(`memes/like/${id}`, {});
+	return client.post<boolean>(`memes/like/${id}`, {});
 };
 
 export const retrieveUserMemeComments = (id: UserId) => {
