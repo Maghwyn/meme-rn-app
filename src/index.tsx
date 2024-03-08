@@ -1,8 +1,11 @@
-// App.tsx
 import { client } from '@api/network/client';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
+import AppNavigator from '@navigations/app/AppNavigator';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import LoginScreen from '@screens/auth/LoginScreen';
+import SignupScreen from '@screens/auth/SignupScreen';
+import VerificationScreen from '@screens/auth/VerificationScreen';
 import { getToken, isAuth, setAuthentication } from '@store/reducers/authSlice';
 import { setupStore } from '@store/store';
 import React, { useEffect } from 'react';
@@ -10,35 +13,9 @@ import { Text } from 'react-native';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import TabBar from './components/tabBar/TabBar';
-import LoginScreen from './screens/auth/LoginScreen';
-import SignupScreen from './screens/auth/SignupScreen';
-import VerificationScreen from './screens/auth/VerificationScreen';
-
 const { store, persistor } = setupStore();
 
 const Stack = createStackNavigator();
-/*
-
-// TODO: To initialize the store, you need to call :
-const { store, persistor } = setupStore();
-<Provider store={store}>
-	<PersistGate loading={<Text>Loading...</Text>} persistor={persistor}>
-		<View></View>
-	</PersistGate>
-</Provider>
-
-// TODO: To retrieve the data :
-import { useAppSelector } from '@hooks/redux';
-import { retrieveUsername } from '@store/reducers/userSlice';
-const username = useAppSelector(retrieveUsername);
-
-// TODO: To dispatch the data :
-import { useAppDispatch } from '@hooks/redux';
-import { setUsername } from '@store/reducers/userSlice';
-const dispatch = useAppDispatch();
-dispatch(serUsername("bob"));
-*/
 
 const App = () => {
 	const token = useAppSelector(getToken);
@@ -70,7 +47,7 @@ const App = () => {
 				{isLoggedIn ? (
 					<Stack.Screen
 						name="TabBar"
-						component={TabBar}
+						component={AppNavigator}
 						options={{
 							gestureEnabled: false,
 						}}
