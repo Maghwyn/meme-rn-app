@@ -1,5 +1,3 @@
-import { retrieveUserMemeCreated, retrieveUserMemeLikes } from '@api/memes.req';
-import type { MemePreview } from '@api/memes.req.type';
 import { getUserById } from '@api/user.req';
 import UserProfileActivities from '@components/UserProfileActivities';
 import UserProfileHeader from '@components/UserProfileHeader';
@@ -13,7 +11,7 @@ import {
 	willViewUserProfileOf,
 } from '@store/reducers/userSlice';
 import { AxiosError } from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import { StyleSheet } from 'react-native';
 
@@ -30,9 +28,6 @@ const UserProfileScreen: UserProfileScreen = ({ navigation }) => {
 	const dispatch = useAppDispatch();
 	const userData = useAppSelector(retrieveUser);
 	const profileUserId = useAppSelector(retrieveUserProfileId);
-
-	const [userMemes, setUserMemes] = useState(Array<MemePreview>);
-	const [userLikedMemes, setUserLikedMemes] = useState(Array<MemePreview>);
 
 	useEffect(() => {
 		const unsubscribeBlur = navigation.addListener('blur', () => {
@@ -67,37 +62,10 @@ const UserProfileScreen: UserProfileScreen = ({ navigation }) => {
 		};
 	}, [dispatch, navigation, userData, profileUserId]);
 
-	useEffect(() => {
-		const fetchUserMemes = async () => {
-			try {
-				const res = await retrieveUserMemeCreated(userData.id);
-				setUserMemes(res.data);
-			} catch (error) {
-				console.error(error.response?.data);
-			}
-		};
-		const fetchUserLikedMemes = async () => {
-			try {
-				const res = await retrieveUserMemeLikes(userData.id);
-				setUserLikedMemes(res.data);
-			} catch (error) {
-				console.error(error.response?.data);
-			}
-		};
-		fetchUserMemes();
-		fetchUserLikedMemes();
-	}, [dispatch, userData.id]);
-
-	console.log(userMemes);
-
 	return (
 		<View style={styles.container}>
 			<UserProfileHeader isOwner={profileUserId === userData.id} />
-			<UserProfileActivities
-				userId={profileUserId || (userData.id as string)}
-				userMemes={userMemes}
-				userLikedMemes={userLikedMemes}
-			/>
+			<UserProfileActivities userId={profileUserId || (userData.id as string)} />
 		</View>
 	);
 };
