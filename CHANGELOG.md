@@ -1,3 +1,17 @@
+# [1.0.0-dev.12](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.11...v1.0.0-dev.12) (2024-03-08)
+
+
+### Bug Fixes
+
+* **ui:** Fix some issues regarding the ui ([df14693](https://github.com/Maghwyn/meme-rn-app/commit/df14693274b8153a9cffc9103cfb0b9d8f44342f))
+* **ui:** Fix the theme of the profile ([5e6589b](https://github.com/Maghwyn/meme-rn-app/commit/5e6589b20dce36a438447937c0ac49f3ec8b3922))
+* **ui:** Homogenize the styling to the auth pages ([8c12f3b](https://github.com/Maghwyn/meme-rn-app/commit/8c12f3b971149b755c627834aa2774d41764a3f4))
+
+
+### Features
+
+* **screen-loader:** Add a screen loader ([893fe0f](https://github.com/Maghwyn/meme-rn-app/commit/893fe0f0d9b1ed7d9af446d543802ebeed89615c))
+
 # [1.0.0-dev.11](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.10...v1.0.0-dev.11) (2024-03-08)
 
 
