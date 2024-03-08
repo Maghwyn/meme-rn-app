@@ -3,8 +3,12 @@ import { StyleSheet } from 'react-native';
 import { View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
+type TouchButtonPropsOverride = {
+	onPress: () => void;
+};
+
 type TouchButton = {
-	(props: BottomTabBarButtonProps): React.JSX.Element;
+	(props: BottomTabBarButtonProps & TouchButtonPropsOverride): React.JSX.Element;
 };
 
 const TouchButton: TouchButton = ({ children, onPress }) => {
@@ -14,7 +18,7 @@ const TouchButton: TouchButton = ({ children, onPress }) => {
 				...styles.touchable,
 				...styles.shadow,
 			}}
-			onPress={() => (onPress !== undefined ? onPress : () => {})}
+			onPress={onPress}
 		>
 			<View style={{ ...styles.view }}>{children}</View>
 		</TouchableOpacity>

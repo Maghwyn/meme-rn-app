@@ -11,7 +11,6 @@ type NavigatorIcon = {
 };
 
 const NavigatorIcon: NavigatorIcon = ({ name, textColor, children }) => {
-	console.log(textColor);
 	return (
 		<View style={{ ...styles.container }}>
 			{children}

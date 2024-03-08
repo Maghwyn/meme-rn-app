@@ -4,8 +4,8 @@ import ProfileSvg from '@assets/profile';
 import NavigatorIcon from '@navigations/app/NavigatorIcon';
 import TouchButton from '@navigations/app/TouchButton';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import CreateMemeScreen from '@screens/app/CreateMemeScreen';
 import FeedHomeScreen from '@screens/app/FeedHomeScreen';
-import CreateMemeScreen from '@screens/meme/CreateMemeScreen';
 import UserProfileScreen from '@screens/profile/UserProfileScreen';
 import React, { useEffect, useState } from 'react';
 import { Keyboard, StyleSheet, View } from 'react-native';
@@ -56,7 +56,7 @@ const AppNavigator = () => {
 						...styles.float,
 						...shadow,
 						display: keyboardStatus ? 'none' : 'flex',
-						backgroundColor: route.name === 'Feed' ? 'rgba(0,0,0,0.8)' : '#ffffff',
+						backgroundColor: route.name === 'HomeFeed' ? 'rgba(0,0,0,0.8)' : '#ffffff',
 					},
 				};
 			}}
@@ -78,15 +78,17 @@ const AppNavigator = () => {
 				name="CreateMeme"
 				// @ts-ignore Lib has shit types, unless we can extend in a .d.ts
 				component={CreateMemeScreen}
-				options={{
+				options={({ navigation }) => ({
 					headerShown: false,
 					tabBarIcon: () => (
 						<View style={{ backgroundColor: '#ffffff', borderRadius: 50 }}>
 							<CreateSvg size={60} fill={getColor(true)} />
 						</View>
 					),
-					tabBarButton: (props) => <TouchButton {...props} />,
-				}}
+					tabBarButton: (props) => (
+						<TouchButton {...props} onPress={() => navigation.navigate('CreateMeme')} />
+					),
+				})}
 			/>
 			<App.Screen
 				name="UserProfile"

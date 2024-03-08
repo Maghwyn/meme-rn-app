@@ -31,7 +31,6 @@ const FeedOverlay: FeedOverlay = ({
 	onDownloadPress,
 	onProfilePress,
 }) => {
-	console.log(liked);
 	return (
 		<View style={styles.overlay}>
 			<LinearGradient
