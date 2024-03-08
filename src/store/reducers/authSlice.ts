@@ -18,12 +18,11 @@ export const authSlice = createSlice({
 		setAuthentication: (state, action: PayloadAction<boolean>) => {
 			state.isAuth = action.payload;
 		},
-		setToken: (state, action) => {
+		setToken: (state, action: PayloadAction<string>) => {
 			state.token = action.payload;
 		},
 		logoutUser: (state) => {
 			state.token = undefined;
-			setToken(undefined);
 		},
 	},
 });
