@@ -1,17 +1,21 @@
 import type { Comment } from '@api/memes.req.type';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 type FeedCommentProps = {
 	item: Comment;
+	onRedirectToProfile: (userId: string) => void;
 };
 
 type FeedComment = {
 	(props: FeedCommentProps): React.JSX.Element;
 };
 
-const FeedComment: FeedComment = ({ item }) => {
+const FeedComment: FeedComment = ({ item, onRedirectToProfile }) => {
 	return (
-		<View style={styles.commentItem}>
+		<TouchableOpacity
+			onLongPress={() => onRedirectToProfile(item.userId)}
+			style={styles.commentItem}
+		>
 			<View style={styles.leftContainer}>
 				<Image source={{ uri: item.pictureUrl }} style={styles.profileImage} />
 			</View>
@@ -20,7 +24,7 @@ const FeedComment: FeedComment = ({ item }) => {
 				<Text style={styles.createdAt}>{item.createdAt}</Text>
 				<Text style={styles.commentText}>{item.content}</Text>
 			</View>
-		</View>
+		</TouchableOpacity>
 	);
 };
 

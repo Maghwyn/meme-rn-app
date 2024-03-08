@@ -118,7 +118,7 @@ const FeedHomeScreen: FeedHomeScreen = ({ navigation }) => {
 			.catch((err) => console.log('BLOB ERROR -> ', JSON.stringify(err)));
 	};
 
-	const navigateToAnotherUserProfile = async (userId: string) => {
+	const navigateToAnotherUserProfile = (userId: string) => {
 		dispatch(willViewUserProfileOf(userId));
 		navigation.navigate('UserProfile');
 	};
@@ -153,6 +153,7 @@ const FeedHomeScreen: FeedHomeScreen = ({ navigation }) => {
 				visible={isBottomSheetVisible}
 				memeId={currentMemeId}
 				onClose={onClose}
+				onRedirectToProfile={navigateToAnotherUserProfile}
 			/>
 		</View>
 	);
