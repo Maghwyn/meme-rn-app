@@ -54,27 +54,33 @@ const LoginScreen: LoginScreen = ({ navigation }) => {
 					/>
 				</View>
 			</View>
-			<Text style={styles.title}>Connectez-vous</Text>
-			<TextInput
-				style={styles.input}
-				placeholder="Email"
-				value={email}
-				onChangeText={setEmail}
-				keyboardType="email-address"
-				autoCapitalize="none"
-				placeholderTextColor="#B0B0B0"
-			/>
-			<TextInput
-				style={styles.input}
-				secureTextEntry={!showPassword}
-				placeholder="Mot de passe"
-				value={password}
-				onChangeText={setPassword}
-				placeholderTextColor="#B0B0B0"
-			/>
+			<Text style={styles.title}>Login</Text>
+			<View style={styles.inputContainer}>
+				<Text style={styles.label}>Your email</Text>
+				<TextInput
+					placeholder="jhon.doe@gmail.com"
+					placeholderTextColor="gray"
+					style={styles.input}
+					value={email}
+					autoCapitalize="none"
+					onChangeText={setEmail}
+				/>
+			</View>
+			<View style={styles.inputContainer}>
+				<Text style={styles.label}>Your password</Text>
+				<TextInput
+					placeholder="**********"
+					placeholderTextColor="gray"
+					style={styles.input}
+					value={password}
+					secureTextEntry
+					autoCapitalize="none"
+					onChangeText={setPassword}
+				/>
+			</View>
 			<TouchableOpacity style={{ margin: 5 }} onPress={() => setShowPassword(!showPassword)}>
 				<Text style={{ fontWeight: 'bold' }}>
-					{showPassword ? 'Cacher le mot de passe' : 'Afficher le mot de passe'}
+					{showPassword ? 'Hide the password' : 'Show the password'}
 				</Text>
 			</TouchableOpacity>
 			<TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
@@ -106,19 +112,16 @@ const styles = StyleSheet.create({
 		paddingBottom: 10,
 	},
 	logoWrapper: {
-		width: 100,
-		height: 100,
+		width: 150,
+		height: 150,
 		borderRadius: 50,
-		backgroundColor: 'red',
 		justifyContent: 'center',
 		alignItems: 'center',
-		borderWidth: 2,
 	},
 	logo: {
 		width: 250,
 		height: 250,
 		borderRadius: 40,
-		borderWidth: 2,
 	},
 	title: {
 		fontSize: 24,
