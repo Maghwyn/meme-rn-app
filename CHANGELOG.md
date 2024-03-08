@@ -1,3 +1,10 @@
+# [1.0.0-dev.18](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.17...v1.0.0-dev.18) (2024-03-08)
+
+
+### Bug Fixes
+
+* **activities:** Fix the infinite loop in the user activities ([8a4eda7](https://github.com/Maghwyn/meme-rn-app/commit/8a4eda74688a01e9087d72f7fc4dee23ba4d0989))
+
 # [1.0.0-dev.17](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.16...v1.0.0-dev.17) (2024-03-08)
 
 
