@@ -1,3 +1,10 @@
+# [1.0.0-dev.16](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.15...v1.0.0-dev.16) (2024-03-08)
+
+
+### Features
+
+* **connexion-logo:** change login icon ([f274d5c](https://github.com/Maghwyn/meme-rn-app/commit/f274d5c95c2feedaed740704aff3e63cd4c091ad))
+
 # [1.0.0-dev.15](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0-dev.14...v1.0.0-dev.15) (2024-03-08)
 
 
