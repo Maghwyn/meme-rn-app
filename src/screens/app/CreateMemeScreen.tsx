@@ -1,6 +1,10 @@
 import { createMeme } from '@api/memes.req';
-import type { Category } from '@api/memes.req.type';
+import type { MemeCategory } from '@api/memes.req.type';
 import { uploadFile } from '@api/upload.req';
+import { useAppDispatch } from '@hooks/redux';
+import type { AuthNavigation, AuthRoute } from '@navigations/types/navigation.type';
+import { setNewMeme } from '@store/reducers/memesSlice';
+import { isEmpty } from '@utils/string.helper';
 import { AxiosError } from 'axios';
 import React, { useState } from 'react';
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
@@ -11,7 +15,8 @@ import {
 } from 'react-native-image-picker';
 
 type CreateMemeScreenProps = {
-	navigation: any;
+	navigation: AuthNavigation;
+	route: AuthRoute;
 };
 
 type CreateMemeScreen = {
@@ -20,12 +25,27 @@ type CreateMemeScreen = {
 
 const CreateMemeScreen: CreateMemeScreen = () => {
 	const [title, setTitle] = useState('');
-	const [selectedCategory, setSelectedCategory] = useState<Category>();
+	const [selectedCategory, setSelectedCategory] = useState<MemeCategory>('');
 	const [uploadedImage, setUplodadImage] = useState('');
 
+	// TODO: We need the categories
 	// const categories: Array<Category> = ['Funny', 'Meme', 'Random'];
 
+	const dispatch = useAppDispatch();
+
 	const openImagePicker = async () => {
+		if (isEmpty(title)) {
+			// TODO: Toast, you must choose a title before uploading
+			console.error('Title is tempty');
+			return;
+		}
+
+		if (isEmpty(selectedCategory)) {
+			// TODO: Toast, you must choose a category before uploading
+			console.error('Category is tempty');
+			return;
+		}
+
 		const options: ImageLibraryOptions = {
 			mediaType: 'photo',
 			includeBase64: false,
@@ -35,15 +55,21 @@ const CreateMemeScreen: CreateMemeScreen = () => {
 
 		launchImageLibrary(options, async (response) => {
 			if (response.didCancel) {
+				// TODO: Toast
 				console.log('User cancelled image picker');
-			} else if (response.errorMessage) {
-				console.log('Image picker error: ', response.errorMessage);
-			} else {
-				const metadata = response.assets![0];
-				const formData = buildFormDataFrom(metadata);
-				await tryUploadFile(formData);
-				setUplodadImage(metadata.uri as string);
+				return;
 			}
+
+			if (response.errorMessage) {
+				// TODO: Toast
+				console.log('Image picker error: ', response.errorMessage);
+				return;
+			}
+
+			const metadata = response.assets![0];
+			const formData = buildFormDataFrom(metadata);
+			await tryUploadFile(formData);
+			setUplodadImage(metadata.uri as string);
 		});
 	};
 
@@ -60,10 +86,13 @@ const CreateMemeScreen: CreateMemeScreen = () => {
 
 	const tryUploadFile = async (formData: FormData) => {
 		try {
-			const res = await uploadFile(formData);
-			const upload = res.data;
-
-			await createMeme({ title, category: selectedCategory, upload });
+			const upload = await uploadFile(formData);
+			const meme = await createMeme({
+				title,
+				category: selectedCategory,
+				upload: upload.data,
+			});
+			dispatch(setNewMeme(meme.data));
 		} catch (error) {
 			if (error instanceof AxiosError) {
 				console.log(error.response?.data);

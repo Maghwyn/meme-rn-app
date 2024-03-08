@@ -51,3 +51,4 @@ export type NewMemeCommentPayload = {
 };
 
 export type MemeId = string;
+export type MemeCategory = string;
