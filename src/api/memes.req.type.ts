@@ -29,6 +29,7 @@ export type MemeCommentPreview = MemePreview & {
 };
 
 export type Comment = {
+	pictureUrl: string;
 	userId: string;
 	username: string;
 	content: string;

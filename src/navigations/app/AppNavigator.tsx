@@ -56,7 +56,7 @@ const AppNavigator = () => {
 						...styles.float,
 						...shadow,
 						display: keyboardStatus ? 'none' : 'flex',
-						backgroundColor: route.name === 'HomeFeed' ? 'rgba(0,0,0,0.8)' : '#ffffff',
+						backgroundColor: 'rgba(0,0,0,0.8)',
 					},
 				};
 			}}

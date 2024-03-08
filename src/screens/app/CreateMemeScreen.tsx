@@ -6,13 +6,14 @@ import type { AuthNavigation, AuthRoute } from '@navigations/types/navigation.ty
 import { setNewMeme } from '@store/reducers/memesSlice';
 import { isEmpty } from '@utils/string.helper';
 import { AxiosError } from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import {
 	type Asset,
 	type ImageLibraryOptions,
 	launchImageLibrary,
 } from 'react-native-image-picker';
+import LoaderKit from 'react-native-loader-kit';
 
 type CreateMemeScreenProps = {
 	navigation: AuthNavigation;
@@ -23,10 +24,11 @@ type CreateMemeScreen = {
 	(props: CreateMemeScreenProps): React.JSX.Element;
 };
 
-const CreateMemeScreen: CreateMemeScreen = () => {
+const CreateMemeScreen: CreateMemeScreen = ({ navigation }) => {
 	const [title, setTitle] = useState('');
 	const [selectedCategory, setSelectedCategory] = useState<MemeCategory>('');
 	const [uploadedImage, setUplodadImage] = useState('');
+	const [uploadState, setUploadState] = useState<'loading' | 'idling'>('idling');
 
 	// TODO: We need the categories
 	// const categories: Array<Category> = ['Funny', 'Meme', 'Random'];
@@ -66,10 +68,14 @@ const CreateMemeScreen: CreateMemeScreen = () => {
 				return;
 			}
 
+			setUploadState('loading');
 			const metadata = response.assets![0];
 			const formData = buildFormDataFrom(metadata);
-			await tryUploadFile(formData);
-			setUplodadImage(metadata.uri as string);
+			const uploaded = await tryUploadFile(formData);
+			if (uploaded) {
+				setUploadState('idling');
+				setUplodadImage(metadata.uri as string);
+			}
 		});
 	};
 
@@ -93,50 +99,74 @@ const CreateMemeScreen: CreateMemeScreen = () => {
 				upload: upload.data,
 			});
 			dispatch(setNewMeme(meme.data));
+			return true;
 		} catch (error) {
 			if (error instanceof AxiosError) {
 				console.log(error.response?.data);
 			}
+			return false;
 		}
 	};
 
+	useEffect(() => {
+		const unsubscribeBlur = navigation.addListener('blur', () => {
+			setTitle('');
+			setSelectedCategory('');
+			setUplodadImage('');
+			setUploadState('idling');
+		});
+
+		// Necessary to trigger blur
+		const unsubscribeFocus = navigation.addListener('focus', () => {});
+
+		return () => {
+			unsubscribeBlur();
+			unsubscribeFocus();
+		};
+	}, [navigation, setTitle, setSelectedCategory, setUplodadImage, setUploadState]);
+
 	return (
 		<View style={styles.container}>
-			<Text style={styles.label}>Title</Text>
-			<TextInput
-				style={styles.input}
-				value={title}
-				onChangeText={setTitle}
-				placeholder="Enter title"
-			/>
+			<Text style={styles.title}>Upload a new meme !</Text>
+			<View style={styles.formContainer}>
+				<Text style={styles.label}>Title</Text>
+				<TextInput
+					placeholder="Enter a title..."
+					placeholderTextColor="gray"
+					style={styles.input}
+					value={title}
+					onChangeText={setTitle}
+				/>
 
-			<Text style={styles.label}>Category</Text>
-			<TextInput
-				style={styles.input}
-				value={selectedCategory}
-				onChangeText={setSelectedCategory}
-				placeholder="Enter Category"
-			/>
-			{/* <Picker
-				selectedValue={selectedCategory}
-				onValueChange={(itemValue: string) => setSelectedCategory(itemValue)}
-			>
-				{categories.map((category: Category) => {
-					return (
-						<Picker.Item label={category.categoryName} value={category.categoryName} />
-					);
-				})}
-			</Picker> */}
+				<Text style={styles.label}>Category</Text>
+				<TextInput
+					placeholder="Enter a category..."
+					placeholderTextColor="gray"
+					style={styles.input}
+					value={selectedCategory}
+					onChangeText={setSelectedCategory}
+				/>
+			</View>
 
 			<TouchableOpacity onPress={openImagePicker} style={styles.uploadButton}>
-				<Text style={styles.buttonText}>Upload Image</Text>
+				<Text style={styles.buttonText}>Create your meme !</Text>
 			</TouchableOpacity>
 
 			{uploadedImage && (
-				<Image
-					source={{ uri: uploadedImage }}
-					style={styles.imageView}
-					resizeMode="contain"
+				<View style={styles.previewContainer}>
+					<Text style={styles.preview}>Preview</Text>
+					<Image
+						source={{ uri: uploadedImage }}
+						style={styles.imageView}
+						resizeMode="cover"
+					/>
+				</View>
+			)}
+			{uploadState === 'loading' && (
+				<LoaderKit
+					style={{ width: '75%', height: '75%', alignSelf: 'center' }}
+					name={'BallClipRotatePulse'}
+					color={'#9c080b'}
 				/>
 			)}
 		</View>
@@ -147,21 +177,49 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		padding: 16,
+		backgroundColor: 'rgba(0,0,0,0.9)',
+	},
+	formContainer: {
+		padding: 16,
+		paddingBottom: 26,
+	},
+	previewContainer: {
+		flex: 1,
+		borderTopColor: 'gray',
+		borderTopWidth: 1,
+		gap: 10,
+		marginBottom: 100,
 	},
 	label: {
 		fontSize: 16,
 		fontWeight: 'bold',
 		marginVertical: 8,
+		color: 'gray',
+	},
+	title: {
+		fontSize: 26,
+		fontWeight: 'bold',
+		paddingTop: 20,
+		color: 'gray',
+		textAlign: 'center',
+	},
+	preview: {
+		fontSize: 20,
+		fontWeight: 'bold',
+		paddingTop: 20,
+		color: 'gray',
 	},
 	input: {
+		height: 40,
+		borderColor: 'gray',
+		color: 'gray',
 		borderWidth: 1,
-		borderColor: '#ccc',
-		borderRadius: 5,
+		borderRadius: 8,
 		padding: 8,
-		marginBottom: 16,
+		marginRight: 8,
 	},
 	uploadButton: {
-		backgroundColor: '#3498db',
+		backgroundColor: '#9c080b',
 		padding: 12,
 		borderRadius: 5,
 		alignItems: 'center',

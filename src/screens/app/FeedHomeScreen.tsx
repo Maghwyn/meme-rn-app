@@ -46,10 +46,12 @@ const FeedHomeScreen: FeedHomeScreen = ({ navigation }) => {
 	}, [dispatch]);
 
 	const onClose = () => {
+		console.log('close');
 		setIsBottomSheetVisible(false);
 	};
 
 	const onCommentPress = (id: string) => {
+		console.log('open');
 		setCurrentMemeId(id);
 		setIsBottomSheetVisible(true);
 	};
