@@ -11,9 +11,11 @@ type ActivityComments = {
 
 const ActivityComments: ActivityComments = ({ memes }) => {
 	return (
-		<ScrollView style={{ height: '70%' }}>
+		<ScrollView style={{ height: '70%', gap: 10 }}>
 			{memes.map((meme) => {
-				return meme.comments.map((item, index) => <FeedComment key={index} item={item} />);
+				return meme.comments.map((item, index) => (
+					<FeedComment key={index} item={item} onRedirectToProfile={() => {}} />
+				));
 			})}
 		</ScrollView>
 	);

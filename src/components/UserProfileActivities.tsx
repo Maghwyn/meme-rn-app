@@ -8,9 +8,8 @@ import ActivityComments from '@components/activities/ActivityComments';
 import ActivityLikes from '@components/activities/ActivityLikes';
 import ActivityMemes from '@components/activities/ActivityMemes';
 import UserProfileActivityButton from '@components/UserProfileActivityButton';
-import useToast from '@hooks/toast';
 import { AxiosError } from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { StyleSheet } from 'react-native';
 
@@ -35,58 +34,48 @@ const UserProfileActivities: UserProfileActivities = ({ userId }) => {
 	const [userLikedMemes, setUserLikedMemes] = useState(Array<MemePreview>);
 	const [userComments, setUserComments] = useState(Array<MemeCommentPreview>);
 
-	const { showToast } = useToast();
+	const fetchUserMemes = useCallback(async () => {
+		try {
+			const res = await retrieveUserMemeCreated(userId);
+			setUserMemes(res.data);
+		} catch (error) {
+			if (error instanceof AxiosError) {
+				console.log(error.response?.data);
+			}
+		}
+	}, [userId]);
+
+	const fetchUserLikedMemes = useCallback(async () => {
+		try {
+			const res = await retrieveUserMemeLikes(userId);
+			setUserLikedMemes(res.data);
+		} catch (error) {
+			if (error instanceof AxiosError) {
+				console.log(error.response?.data);
+			}
+		}
+	}, [userId]);
+
+	const fetchUserComments = useCallback(async () => {
+		try {
+			const res = await retrieveUserMemeComments(userId);
+			setUserComments(res.data);
+		} catch (error) {
+			if (error instanceof AxiosError) {
+				console.log(error.response?.data);
+			}
+		}
+	}, [userId]);
 
 	useEffect(() => {
-		const fetchUserMemes = async () => {
-			try {
-				const res = await retrieveUserMemeCreated(userId);
-				setUserMemes(res.data);
-			} catch (error) {
-				if (error instanceof AxiosError) {
-					console.log(error.response?.data);
-				}
-				showToast({
-					type: 'error',
-					text1: 'Fetch Error',
-					text2: 'Failed to fetch user memes. Please try again.',
-				});
-			}
-		};
-		const fetchUserLikedMemes = async () => {
-			try {
-				const res = await retrieveUserMemeLikes(userId);
-				setUserLikedMemes(res.data);
-			} catch (error) {
-				if (error instanceof AxiosError) {
-					console.log(error.response?.data);
-				}
-				showToast({
-					type: 'error',
-					text1: 'Fetch Error',
-					text2: 'Failed to fetch user liked memes. Please try again.',
-				});
-			}
-		};
-		const fetchUserComments = async () => {
-			try {
-				const res = await retrieveUserMemeComments(userId);
-				setUserComments(res.data);
-			} catch (error) {
-				if (error instanceof AxiosError) {
-					console.log(error.response?.data);
-				}
-				showToast({
-					type: 'error',
-					text1: 'Fetch Error',
-					text2: 'Failed to fetch user comments. Please try again.',
-				});
-			}
-		};
-		fetchUserMemes();
-		fetchUserLikedMemes();
-		fetchUserComments();
-	}, [showToast, userId]);
+		if (filter === ProfileTabFilter.COMMENTS) {
+			fetchUserComments();
+		} else if (filter === ProfileTabFilter.MEMES) {
+			fetchUserMemes();
+		} else if (filter === ProfileTabFilter.LIKES) {
+			fetchUserLikedMemes();
+		}
+	}, [filter, fetchUserComments, fetchUserMemes, fetchUserLikedMemes]);
 
 	return (
 		<View style={styles.userActivity}>
@@ -107,7 +96,7 @@ const UserProfileActivities: UserProfileActivities = ({ userId }) => {
 					onPress={() => setFilter(ProfileTabFilter.COMMENTS)}
 				/>
 			</View>
-			<View>
+			<View style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
 				{filter === ProfileTabFilter.MEMES && <ActivityMemes memes={userMemes} />}
 				{filter === ProfileTabFilter.LIKES && <ActivityLikes likedMemes={userLikedMemes} />}
 				{filter === ProfileTabFilter.COMMENTS && <ActivityComments memes={userComments} />}

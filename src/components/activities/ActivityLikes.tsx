@@ -19,9 +19,10 @@ const ActivityLikes: ActivityLikes = ({ likedMemes }) => {
 				<View key={meme.id} style={styles.cardContainer}>
 					<Image source={{ uri: meme.pictureUrl }} style={styles.image} />
 					<View style={styles.detailsContainer}>
-						<Text style={styles.title}>{meme.title}</Text>
-						<Text style={styles.category}>{meme.category}</Text>
+						<Text style={styles.title}>Title: {meme.title}</Text>
+						<Text style={styles.category}>Category : {meme.category}</Text>
 						<Text style={styles.likesCount}>{`${meme.likesCount} Likes`}</Text>
+						<Text style={styles.likesCount}>{`${meme.commentsCount} Comments`}</Text>
 					</View>
 				</View>
 			))}

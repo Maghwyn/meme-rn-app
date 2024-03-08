@@ -8,8 +8,7 @@ export const styles = StyleSheet.create({
 		padding: 16,
 		margin: 8,
 		borderRadius: 8,
-		backgroundColor: '#fff',
-		shadowColor: '#000',
+		backgroundColor: 'rgba(255,255,255, 0.2)',
 		shadowOffset: {
 			width: 0,
 			height: 2,
@@ -30,7 +29,7 @@ export const styles = StyleSheet.create({
 	title: {
 		fontSize: 18,
 		fontWeight: 'bold',
-		color: '#000',
+		color: 'lightgray',
 	},
 	category: {
 		fontSize: 16,

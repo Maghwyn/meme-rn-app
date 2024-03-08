@@ -22,6 +22,7 @@ const ActivityMemes: ActivityMemes = ({ memes }) => {
 						<Text style={styles.title}>{meme.title}</Text>
 						<Text style={styles.category}>{meme.category}</Text>
 						<Text style={styles.likesCount}>{`${meme.likesCount} Likes`}</Text>
+						<Text style={styles.likesCount}>{`${meme.commentsCount} Comments`}</Text>
 					</View>
 				</View>
 			))}
