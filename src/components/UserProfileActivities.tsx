@@ -26,7 +26,6 @@ enum ProfileTabFilter {
 const UserProfileActivities: UserProfileActivities = ({ userId, userMemes, userLikedMemes }) => {
 	const [filter, setFilter] = useState<ProfileTabFilter>(ProfileTabFilter.MEMES);
 	console.log(userId);
-	// TODO: Use the userId to fetch the memes, likes, comments from the filter
 
 	return (
 		<View style={styles.userActivity}>

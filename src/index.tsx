@@ -13,6 +13,7 @@ import { setupStore } from '@store/store';
 import { AxiosError } from 'axios';
 import React, { useEffect } from 'react';
 import { Text } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
@@ -73,6 +74,7 @@ const App = () => {
 					</>
 				)}
 			</Stack.Navigator>
+			<Toast />
 		</NavigationContainer>
 	);
 };

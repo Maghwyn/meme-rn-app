@@ -2,6 +2,7 @@ import { createMeme } from '@api/memes.req';
 import type { MemeCategory } from '@api/memes.req.type';
 import { uploadFile } from '@api/upload.req';
 import { useAppDispatch } from '@hooks/redux';
+import useToast from '@hooks/toast';
 import type { AuthNavigation, AuthRoute } from '@navigations/types/navigation.type';
 import { setNewMeme } from '@store/reducers/memesSlice';
 import { isEmpty } from '@utils/string.helper';
@@ -30,6 +31,8 @@ const CreateMemeScreen: CreateMemeScreen = ({ navigation }) => {
 	const [uploadedImage, setUplodadImage] = useState('');
 	const [uploadState, setUploadState] = useState<'loading' | 'idling'>('idling');
 
+	const { showToast } = useToast();
+
 	// TODO: We need the categories
 	// const categories: Array<Category> = ['Funny', 'Meme', 'Random'];
 
@@ -37,14 +40,12 @@ const CreateMemeScreen: CreateMemeScreen = ({ navigation }) => {
 
 	const openImagePicker = async () => {
 		if (isEmpty(title)) {
-			// TODO: Toast, you must choose a title before uploading
-			console.error('Title is tempty');
+			showToast({ type: 'error', text1: 'Error', text2: 'Meme title must be not empty' });
 			return;
 		}
 
 		if (isEmpty(selectedCategory)) {
-			// TODO: Toast, you must choose a category before uploading
-			console.error('Category is tempty');
+			showToast({ type: 'error', text1: 'Error', text2: 'Meme category must be selected' });
 			return;
 		}
 
@@ -57,14 +58,16 @@ const CreateMemeScreen: CreateMemeScreen = ({ navigation }) => {
 
 		launchImageLibrary(options, async (response) => {
 			if (response.didCancel) {
-				// TODO: Toast
-				console.log('User cancelled image picker');
+				showToast({ type: 'info', text1: 'Info', text2: 'User cancelled image picker' });
 				return;
 			}
 
 			if (response.errorMessage) {
-				// TODO: Toast
-				console.log('Image picker error: ', response.errorMessage);
+				showToast({
+					type: 'error',
+					text1: 'Error',
+					text2: `Image picker error: ${response.errorMessage}`,
+				});
 				return;
 			}
 
@@ -75,6 +78,17 @@ const CreateMemeScreen: CreateMemeScreen = ({ navigation }) => {
 			if (uploaded) {
 				setUploadState('idling');
 				setUplodadImage(metadata.uri as string);
+				showToast({
+					type: 'success',
+					text1: 'Success',
+					text2: `Votre meme ${title} a été crée !`,
+				});
+			} else {
+				showToast({
+					type: 'success',
+					text1: 'Success',
+					text2: `Votre meme ${title} n'a pas pu être crée !`,
+				});
 			}
 		});
 	};
