@@ -1,11 +1,13 @@
 import { createMemeComment } from '@api/memes.req';
-import type { Comment } from '@api/memes.req.type';
-import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
 import { retrieveMemeComments, setNewCommment } from '@store/reducers/memesSlice';
 import { AxiosError } from 'axios';
-import { useRef, useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+
+import FeedComment from './FeedComment';
 
 type FeedBottomSheetProps = {
 	visible: boolean;
@@ -24,13 +26,6 @@ const FeedBottomSheet: FeedBottomSheet = ({ visible, memeId, onClose }) => {
 
 	const comments = useAppSelector((state) => retrieveMemeComments(state, memeId));
 
-	const renderCommentItem = ({ item }: { item: Comment }) => (
-		<View style={styles.commentItem}>
-			<Text>{item.content}</Text>
-			<Text>{item.username}</Text>
-		</View>
-	);
-
 	const handleAddComment = async () => {
 		if (newComment.trim() !== '') {
 			try {
@@ -45,34 +40,59 @@ const FeedBottomSheet: FeedBottomSheet = ({ visible, memeId, onClose }) => {
 		}
 	};
 
+	useEffect(() => {
+		if (visible) {
+			bottomSheetRef.current?.expand();
+		} else {
+			bottomSheetRef.current?.close();
+			setNewComment('');
+		}
+	}, [visible]);
+
+	const renderBackdrop = useCallback(
+		(props: any) => (
+			<BottomSheetBackdrop
+				enableTouchThrough={false}
+				pressBehavior={'close'}
+				appearsOnIndex={0}
+				disappearsOnIndex={-1}
+				{...props}
+			/>
+		),
+		[],
+	);
+
 	return (
 		<BottomSheet
 			ref={bottomSheetRef}
-			index={0}
-			snapPoints={['25%', '50%', '75%', '100%']}
-			style={{ display: visible ? 'flex' : 'none' }}
+			index={-1}
+			snapPoints={['25%', '50%', '75%', '80%']}
+			backdropComponent={renderBackdrop}
+			enablePanDownToClose={false}
+			enableContentPanningGesture={false}
+			onClose={onClose}
+			backgroundStyle={{ backgroundColor: 'rgba(0,0,0,0.8)' }}
 		>
 			<View style={styles.bottomSheetContent}>
 				<View style={styles.addCommentContainer}>
 					<TextInput
-						placeholder="Add a comment..."
+						placeholder="Add a new comment..."
+						placeholderTextColor="gray"
 						value={newComment}
 						onChangeText={(text) => setNewComment(text)}
+						onSubmitEditing={handleAddComment}
 						style={styles.commentInput}
 					/>
-					<TouchableOpacity onPress={handleAddComment}>
-						<Text style={styles.addCommentButton}>Add</Text>
-					</TouchableOpacity>
 				</View>
-				<TouchableOpacity onPress={onClose} style={styles.closeButton}>
-					<Text style={styles.closeButtonText}>Close</Text>
-				</TouchableOpacity>
 				<View style={styles.addCommentContainer}>
-					<BottomSheetFlatList
-						data={comments}
-						renderItem={renderCommentItem}
-						keyExtractor={(_, index) => index.toString()}
-					/>
+					<Text style={styles.commentTitle}>Comments</Text>
+				</View>
+				<View style={styles.addCommentContainer}>
+					<ScrollView contentContainerStyle={{ gap: 10, paddingBottom: 350 }}>
+						{comments.map((item, index) => (
+							<FeedComment key={index} item={item} />
+						))}
+					</ScrollView>
 				</View>
 			</View>
 		</BottomSheet>
@@ -81,10 +101,12 @@ const FeedBottomSheet: FeedBottomSheet = ({ visible, memeId, onClose }) => {
 
 const styles = StyleSheet.create({
 	bottomSheetContent: {
-		backgroundColor: 'white',
 		padding: 16,
+		paddingTop: 0,
 	},
 	commentItem: {
+		backgroundColor: 'rgba(255,255,255, 0.2)',
+		borderRadius: 10,
 		borderBottomWidth: 1,
 		borderBottomColor: '#ddd',
 		padding: 8,
@@ -100,6 +122,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		height: 40,
 		borderColor: 'gray',
+		color: 'gray',
 		borderWidth: 1,
 		borderRadius: 8,
 		padding: 8,
@@ -121,6 +144,14 @@ const styles = StyleSheet.create({
 		color: 'white',
 		fontSize: 16,
 		fontWeight: 'bold',
+	},
+	commentTitle: {
+		color: 'gray',
+		fontSize: 22,
+		borderTopWidth: 1,
+		borderTopColor: 'gray',
+		width: '100%',
+		paddingTop: 16,
 	},
 });
 
