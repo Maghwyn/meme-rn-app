@@ -61,7 +61,7 @@ const FeedHomeScreen: FeedHomeScreen = ({ navigation }) => {
 				setNewLike({
 					id,
 					liked: res.data,
-					userId: userData.value.id!,
+					userId: userData.id!,
 				}),
 			);
 		} catch (error) {
@@ -138,7 +138,7 @@ const FeedHomeScreen: FeedHomeScreen = ({ navigation }) => {
 							username={meme.username}
 							category={meme.category}
 							createdAt={meme.createdAt}
-							liked={meme.likes.includes(userData.value.id!)}
+							liked={meme.likes.includes(userData.id!)}
 							onCommentPress={() => onCommentPress(meme.id)}
 							onLikePress={() => onLikePress(meme.id)}
 							onDownloadPress={() => onDownloadPress(meme.upload)}

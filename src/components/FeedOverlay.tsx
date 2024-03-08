@@ -76,8 +76,11 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	gradiant: {
+		position: 'absolute',
+		top: 0,
 		alignSelf: 'stretch',
-		height: 300,
+		width: '100%',
+		// height: ,
 	},
 	header: {
 		alignSelf: 'stretch',
@@ -90,7 +93,6 @@ const styles = StyleSheet.create({
 		shadowRadius: 3.5,
 		elevation: 5,
 		flex: 1,
-		height: 200,
 		padding: 20,
 		paddingHorizontal: 16,
 	},

@@ -1,16 +1,19 @@
-import { getMe, getUserById } from '@api/user.req';
-import UserProfilComments from '@components/user-profil/UserProfilComments';
-import UserProfilLikedMemeLists from '@components/user-profil/UserProfilLikedMemeLists';
-import UserProfilMemeLists from '@components/user-profil/UserProfilMemeLists';
+import { getUserById } from '@api/user.req';
+import UserProfileActivities from '@components/UserProfileActivities';
+import UserProfileHeader from '@components/UserProfileHeader';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
 import type { AuthNavigation, AuthRoute } from '@navigations/types/navigation.type';
-import { setAuthentication, setToken } from '@store/reducers/authSlice';
-import { retrieveUser, retrieveUserProfileId, setUserData } from '@store/reducers/userSlice';
+import {
+	resetUserProfile,
+	retrieveUser,
+	retrieveUserProfileId,
+	setUserProfileData,
+	willViewUserProfileOf,
+} from '@store/reducers/userSlice';
 import { AxiosError } from 'axios';
-import React, { useEffect, useState } from 'react';
-import { Button, Image, ImageBackground, Text, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { View } from 'react-native';
 import { StyleSheet } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 type UserProfileScreenProps = {
 	navigation: AuthNavigation;
@@ -21,138 +24,48 @@ type UserProfileScreen = {
 	(props: UserProfileScreenProps): React.JSX.Element;
 };
 
-enum ProfileTabFilter {
-	MEMES,
-	LIKES,
-	COMMENTS,
-}
-
-const UserProfileScreen: UserProfileScreen = () => {
+const UserProfileScreen: UserProfileScreen = ({ navigation }) => {
 	const dispatch = useAppDispatch();
 	const userData = useAppSelector(retrieveUser);
-	const anotherUserId = useAppSelector(retrieveUserProfileId);
-	const [filter, setFilter] = useState<ProfileTabFilter>(ProfileTabFilter.MEMES);
-
-	const logoutUser = () => {
-		dispatch(setToken(undefined));
-		dispatch(setAuthentication(false));
-	};
+	const profileUserId = useAppSelector(retrieveUserProfileId);
 
 	useEffect(() => {
-		const getUserByIdRequest = async (userIdParam: string) => {
-			try {
-				const res = await getUserById(userIdParam);
-				if (res.status === 200) {
-					dispatch(setUserData(res.data));
-				}
-			} catch (error) {
-				if (error instanceof AxiosError) {
-					console.log(error.response?.data);
-				}
-			}
-		};
-		if (anotherUserId !== undefined) {
-			getUserByIdRequest(anotherUserId);
-		} else {
-			const getLoggedUserData = async () => {
-				const res = await getMe();
-				if (res.status === 200) {
-					dispatch(setUserData(res.data));
+		const unsubscribeBlur = navigation.addListener('blur', () => {
+			if (profileUserId === userData.id) return;
+			dispatch(resetUserProfile());
+		});
+
+		const unsubscribeFocus = navigation.addListener('focus', () => {
+			const getUserByIdRequest = async (userIdParam: string) => {
+				try {
+					const res = await getUserById(userIdParam);
+					dispatch(setUserProfileData(res.data));
+				} catch (error) {
+					if (error instanceof AxiosError) {
+						console.log(error.response?.data);
+					}
 				}
 			};
-			getLoggedUserData();
-			console.log(`c'est moi ${userData.value.username}`);
-		}
-	}, [anotherUserId, dispatch, userData.value.id, userData.value.username]);
+
+			if (profileUserId && profileUserId !== userData.id) {
+				getUserByIdRequest(profileUserId);
+			} else if (profileUserId === '') {
+				// Act as a clone to bind our own page data with the page of any user
+				dispatch(setUserProfileData({ ...userData }));
+				dispatch(willViewUserProfileOf(userData.id!));
+			}
+		});
+
+		return () => {
+			unsubscribeBlur();
+			unsubscribeFocus();
+		};
+	}, [dispatch, navigation, userData, profileUserId]);
 
 	return (
 		<View style={styles.container}>
-			<View style={{ ...styles.containerThumbnail, ...styles.shadow }}>
-				<ImageBackground
-					source={{ uri: userData.value.backgroundUrl }}
-					style={styles.backgroundImage}
-				>
-					<Image
-						source={{
-							uri: userData.value.pictureUrl,
-						}}
-						style={styles.avatar}
-					/>
-				</ImageBackground>
-				<View style={styles.logoutButton}>
-					<Button title="Logout" onPress={logoutUser} />
-				</View>
-			</View>
-			<View style={styles.userInfo}>
-				<Text style={styles.username}>{`@${userData.value.username}`}</Text>
-				<Text style={styles.userBio}>{userData.value.bio}</Text>
-			</View>
-			<View style={styles.userActivity}>
-				<View style={styles.viewTabButtons}>
-					<TouchableOpacity
-						style={{
-							...styles.tabButton,
-							backgroundColor:
-								filter === ProfileTabFilter.MEMES
-									? '#9c080b'
-									: 'rgba(240,240,240,1)',
-						}}
-						onPress={() => setFilter(ProfileTabFilter.MEMES)}
-					>
-						<Text
-							style={{
-								...styles.tabText,
-								color: filter === ProfileTabFilter.MEMES ? 'white' : 'gray',
-							}}
-						>
-							Memes
-						</Text>
-					</TouchableOpacity>
-					<TouchableOpacity
-						style={{
-							...styles.tabButton,
-							backgroundColor:
-								filter === ProfileTabFilter.LIKES
-									? '#9c080b'
-									: 'rgba(240,240,240,1)',
-						}}
-						onPress={() => setFilter(ProfileTabFilter.LIKES)}
-					>
-						<Text
-							style={{
-								...styles.tabText,
-								color: filter === ProfileTabFilter.LIKES ? 'white' : 'gray',
-							}}
-						>
-							Likes
-						</Text>
-					</TouchableOpacity>
-					<TouchableOpacity
-						style={{
-							...styles.tabButton,
-							backgroundColor:
-								filter === ProfileTabFilter.COMMENTS
-									? '#9c080b'
-									: 'rgba(240,240,240,1)',
-						}}
-						onPress={() => setFilter(ProfileTabFilter.COMMENTS)}
-					>
-						<Text
-							style={{
-								...styles.tabText,
-								color: filter === ProfileTabFilter.COMMENTS ? 'white' : 'gray',
-							}}
-						>
-							Comments
-						</Text>
-					</TouchableOpacity>
-				</View>
-				<View>
-					{filter === ProfileTabFilter.MEMES && <UserProfilMemeLists />}
-					{filter === ProfileTabFilter.LIKES && <UserProfilLikedMemeLists />}
-					{filter === ProfileTabFilter.COMMENTS && <UserProfilComments />}
-				</View>
-			</View>
+			<UserProfileHeader isOwner={profileUserId === userData.id} />
+			<UserProfileActivities userId={profileUserId || (userData.id as string)} />
 		</View>
 	);
 };
