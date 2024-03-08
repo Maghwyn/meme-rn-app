@@ -1,6 +1,7 @@
 import { loginUser } from '@api/auth.req';
 import { client } from '@api/network/client';
 import { useAppDispatch } from '@hooks/redux';
+import useToast from '@hooks/toast';
 import { setAuthentication, setToken } from '@store/reducers/authSlice';
 import { AxiosError } from 'axios';
 import React, { useState } from 'react';
@@ -17,7 +18,11 @@ export type LoginScreen = {
 const LoginScreen: LoginScreen = ({ navigation }) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [showPassword, setShowPassword] = useState(false);
+
 	const dispatch = useAppDispatch();
+
+	const { showToast } = useToast();
 
 	const handleLogin = async () => {
 		try {
@@ -26,6 +31,10 @@ const LoginScreen: LoginScreen = ({ navigation }) => {
 				dispatch(setToken(res.data));
 				dispatch(setAuthentication(true));
 				client.defaults.headers.common.Authorization = `Bearer ${res.data}`;
+				showToast({
+					type: 'success',
+					text1: 'Login Success !',
+				});
 				navigation.navigate('TabBar');
 			}
 		} catch (error) {
@@ -42,30 +51,29 @@ const LoginScreen: LoginScreen = ({ navigation }) => {
 					<Image source={require('./../../../assets/icon.png')} style={styles.logo} />
 				</View>
 			</View>
-			<Text style={styles.title}>Login</Text>
-			<View style={styles.inputContainer}>
-				<Text style={styles.label}>Your email</Text>
-				<TextInput
-					placeholder="jhon.doe@gmail.com"
-					placeholderTextColor="gray"
-					style={styles.input}
-					value={email}
-					autoCapitalize="none"
-					onChangeText={setEmail}
-				/>
-			</View>
-			<View style={styles.inputContainer}>
-				<Text style={styles.label}>Your password</Text>
-				<TextInput
-					placeholder="**********"
-					placeholderTextColor="gray"
-					style={styles.input}
-					value={password}
-					secureTextEntry
-					autoCapitalize="none"
-					onChangeText={setPassword}
-				/>
-			</View>
+			<Text style={styles.title}>Connectez-vous</Text>
+			<TextInput
+				style={styles.input}
+				placeholder="Email"
+				value={email}
+				onChangeText={setEmail}
+				keyboardType="email-address"
+				autoCapitalize="none"
+				placeholderTextColor="#B0B0B0"
+			/>
+			<TextInput
+				style={styles.input}
+				secureTextEntry={!showPassword}
+				placeholder="Mot de passe"
+				value={password}
+				onChangeText={setPassword}
+				placeholderTextColor="#B0B0B0"
+			/>
+			<TouchableOpacity style={{ margin: 5 }} onPress={() => setShowPassword(!showPassword)}>
+				<Text style={{ fontWeight: 'bold' }}>
+					{showPassword ? 'Cacher le mot de passe' : 'Afficher le mot de passe'}
+				</Text>
+			</TouchableOpacity>
 			<TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
 				<Text style={styles.loginButtonText}>Connect</Text>
 			</TouchableOpacity>

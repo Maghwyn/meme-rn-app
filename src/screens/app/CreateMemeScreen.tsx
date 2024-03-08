@@ -2,12 +2,14 @@ import { createMeme } from '@api/memes.req';
 import type { MemeCategory } from '@api/memes.req.type';
 import { uploadFile } from '@api/upload.req';
 import { useAppDispatch } from '@hooks/redux';
+import useToast from '@hooks/toast';
 import type { AuthNavigation, AuthRoute } from '@navigations/types/navigation.type';
 import { setNewMeme } from '@store/reducers/memesSlice';
 import { isEmpty } from '@utils/string.helper';
 import { AxiosError } from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import DropDownPicker from 'react-native-dropdown-picker';
 import {
 	type Asset,
 	type ImageLibraryOptions,
@@ -30,6 +32,23 @@ const CreateMemeScreen: CreateMemeScreen = ({ navigation }) => {
 	const [uploadedImage, setUplodadImage] = useState('');
 	const [uploadState, setUploadState] = useState<'loading' | 'idling'>('idling');
 
+	const [open, setOpen] = useState(false);
+	const [items, setItems] = useState([
+		{ label: 'twitter', value: 'twitter' },
+		{ label: 'joke', value: 'joke' },
+		{ label: 'cartoon', value: 'cartoon' },
+		{ label: 'troll', value: 'troll' },
+		{ label: 'cat', value: 'cat' },
+		{ label: 'sport', value: 'sport' },
+		{ label: 'music', value: 'music' },
+		{ label: 'dev', value: 'dev' },
+		{ label: 'anime', value: 'anime' },
+		{ label: 'cinema', value: 'cinema' },
+		{ label: 'animals', value: 'animals' },
+	]);
+
+	const { showToast } = useToast();
+
 	// TODO: We need the categories
 	// const categories: Array<Category> = ['Funny', 'Meme', 'Random'];
 
@@ -37,14 +56,12 @@ const CreateMemeScreen: CreateMemeScreen = ({ navigation }) => {
 
 	const openImagePicker = async () => {
 		if (isEmpty(title)) {
-			// TODO: Toast, you must choose a title before uploading
-			console.error('Title is tempty');
+			showToast({ type: 'error', text1: 'Error', text2: 'Meme title must be not empty' });
 			return;
 		}
 
 		if (isEmpty(selectedCategory)) {
-			// TODO: Toast, you must choose a category before uploading
-			console.error('Category is tempty');
+			showToast({ type: 'error', text1: 'Error', text2: 'Meme category must be selected' });
 			return;
 		}
 
@@ -57,14 +74,16 @@ const CreateMemeScreen: CreateMemeScreen = ({ navigation }) => {
 
 		launchImageLibrary(options, async (response) => {
 			if (response.didCancel) {
-				// TODO: Toast
-				console.log('User cancelled image picker');
+				showToast({ type: 'info', text1: 'Info', text2: 'User cancelled image picker' });
 				return;
 			}
 
 			if (response.errorMessage) {
-				// TODO: Toast
-				console.log('Image picker error: ', response.errorMessage);
+				showToast({
+					type: 'error',
+					text1: 'Error',
+					text2: `Image picker error: ${response.errorMessage}`,
+				});
 				return;
 			}
 
@@ -75,6 +94,17 @@ const CreateMemeScreen: CreateMemeScreen = ({ navigation }) => {
 			if (uploaded) {
 				setUploadState('idling');
 				setUplodadImage(metadata.uri as string);
+				showToast({
+					type: 'success',
+					text1: 'Success',
+					text2: `Votre meme ${title} a été crée !`,
+				});
+			} else {
+				showToast({
+					type: 'success',
+					text1: 'Success',
+					text2: `Votre meme ${title} n'a pas pu être crée !`,
+				});
 			}
 		});
 	};
@@ -103,6 +133,11 @@ const CreateMemeScreen: CreateMemeScreen = ({ navigation }) => {
 		} catch (error) {
 			if (error instanceof AxiosError) {
 				console.log(error.response?.data);
+				showToast({
+					type: 'error',
+					text1: 'Error',
+					text2: `Failed to upload meme file: ${error.response?.data}`,
+				});
 			}
 			return false;
 		}
@@ -140,13 +175,14 @@ const CreateMemeScreen: CreateMemeScreen = ({ navigation }) => {
 				/>
 
 				<Text style={styles.label}>Category</Text>
-				<TextInput
-					placeholder="Enter a category..."
-					placeholderTextColor="gray"
-					style={styles.input}
+        <DropDownPicker
+					open={open}
 					value={selectedCategory}
-					onChangeText={setSelectedCategory}
-					autoCapitalize="none"
+					items={items}
+					setOpen={setOpen}
+					setValue={setSelectedCategory}
+					setItems={setItems}
+					placeholder={'Choose a category'}
 				/>
 			</View>
 

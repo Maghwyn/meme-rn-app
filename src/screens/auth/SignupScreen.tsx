@@ -1,4 +1,5 @@
 import { signupUser } from '@api/auth.req';
+import useToast from '@hooks/toast';
 import { AxiosError } from 'axios';
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
@@ -18,10 +19,17 @@ const SignupScreen: SignupScreen = ({ navigation }) => {
 	const [password, setPassword] = useState('');
 	const [username, setUsername] = useState('');
 
+	const { showToast } = useToast();
+
 	const handleSignup = async () => {
 		try {
 			const res = await signupUser({ username, email, password });
 			if (res.status === 201) {
+				showToast({
+					type: 'info',
+					text1: 'SignUp Success !',
+					text2: 'Check your email and put your verification code',
+				});
 				navigation.navigate('Verification');
 			}
 		} catch (error) {

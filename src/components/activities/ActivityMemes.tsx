@@ -1,16 +1,30 @@
+import type { MemePreview } from '@api/memes.req.type';
 import React from 'react';
-import { ScrollView, Text } from 'react-native';
+import { Image, ScrollView, Text, View } from 'react-native';
 
-type ActivityMemesProps = {};
+import { styles } from './ActivityMemeUsersStyle';
+
+type ActivityMemesProps = {
+	memes: Array<MemePreview>;
+};
 
 type ActivityMemes = {
 	(props: ActivityMemesProps): React.JSX.Element;
 };
 
-const ActivityMemes: ActivityMemes = () => {
+const ActivityMemes: ActivityMemes = ({ memes }) => {
 	return (
-		<ScrollView>
-			<Text>ActivityMemes</Text>
+		<ScrollView style={{ height: '70%' }}>
+			{memes.map((meme) => (
+				<View key={meme.id} style={styles.cardContainer}>
+					<Image source={{ uri: meme.pictureUrl }} style={styles.image} />
+					<View style={styles.detailsContainer}>
+						<Text style={styles.title}>{meme.title}</Text>
+						<Text style={styles.category}>{meme.category}</Text>
+						<Text style={styles.likesCount}>{`${meme.likesCount} Likes`}</Text>
+					</View>
+				</View>
+			))}
 		</ScrollView>
 	);
 };

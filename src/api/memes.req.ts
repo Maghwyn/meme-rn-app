@@ -29,13 +29,13 @@ export const toggleLike = (id: MemeId) => {
 };
 
 export const retrieveUserMemeComments = (id: UserId) => {
-	return client.get<MemeCommentPreview>(`memes/${id}/comments`, {});
+	return client.get<Array<MemeCommentPreview>>(`memes/${id}/comments`, {});
 };
 
 export const retrieveUserMemeLikes = (id: UserId) => {
-	return client.get<MemePreview>(`memes/${id}/likes`, {});
+	return client.get<Array<MemePreview>>(`memes/${id}/likes`, {});
 };
 
 export const retrieveUserMemeCreated = (id: UserId) => {
-	return client.get<MemePreview>(`memes/${id}/created`, {});
+	return client.get<Array<MemePreview>>(`memes/${id}/created`, {});
 };
