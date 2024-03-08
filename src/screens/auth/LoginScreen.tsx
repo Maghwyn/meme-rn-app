@@ -17,6 +17,8 @@ export type LoginScreen = {
 const LoginScreen: LoginScreen = ({ navigation }) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [showPassword, setShowPassword] = useState(false);
+
 	const dispatch = useAppDispatch();
 
 	const handleLogin = async () => {
@@ -54,12 +56,17 @@ const LoginScreen: LoginScreen = ({ navigation }) => {
 			/>
 			<TextInput
 				style={styles.input}
+				secureTextEntry={!showPassword}
 				placeholder="Mot de passe"
-				secureTextEntry
 				value={password}
 				onChangeText={setPassword}
 				placeholderTextColor="#B0B0B0"
 			/>
+			<TouchableOpacity style={{ margin: 5 }} onPress={() => setShowPassword(!showPassword)}>
+				<Text style={{ fontWeight: 'bold' }}>
+					{showPassword ? 'Cacher le mot de passe' : 'Afficher le mot de passe'}
+				</Text>
+			</TouchableOpacity>
 			<TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
 				<Text style={styles.loginButtonText}>Connexion</Text>
 			</TouchableOpacity>
