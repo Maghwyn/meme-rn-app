@@ -186,7 +186,7 @@ const FeedHomeScreen: FeedHomeScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
 	wrapper: {
-		backgroundColor: 'black',
+		backgroundColor: 'rgba(0,0,0,0.8)',
 	},
 	slide: {
 		flex: 1,

@@ -80,7 +80,6 @@ const styles = StyleSheet.create({
 		top: 0,
 		alignSelf: 'stretch',
 		width: '100%',
-		// height: ,
 	},
 	header: {
 		alignSelf: 'stretch',

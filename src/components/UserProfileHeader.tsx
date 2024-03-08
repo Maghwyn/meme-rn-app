@@ -1,8 +1,9 @@
+import UserProfileActivityButton from '@components/UserProfileActivityButton';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
 import { logoutUser, setAuthentication } from '@store/reducers/authSlice';
 import { retrieveUserProfile } from '@store/reducers/userSlice';
 import React from 'react';
-import { Button, Image, ImageBackground, Text, View } from 'react-native';
+import { Image, ImageBackground, Text, View } from 'react-native';
 import { StyleSheet } from 'react-native';
 
 type UserProfileHeaderProps = {
@@ -42,7 +43,11 @@ const UserProfileHeader: UserProfileHeader = ({ isOwner }) => {
 				</ImageBackground>
 				{isOwner && (
 					<View style={styles.logoutButton}>
-						<Button title="Logout" onPress={tryLogoutUser} />
+						<UserProfileActivityButton
+							name={'Logout'}
+							active={true}
+							onPress={tryLogoutUser}
+						/>
 					</View>
 				)}
 			</View>
@@ -73,7 +78,7 @@ const styles = StyleSheet.create({
 	backgroundImage: {
 		width: '100%',
 		alignSelf: 'stretch',
-		borderBottomColor: 'lightgray',
+		borderBottomColor: 'white',
 		borderBottomWidth: 3,
 	},
 	shadow: {
@@ -94,7 +99,7 @@ const styles = StyleSheet.create({
 		alignSelf: 'center',
 		marginTop: 80,
 		marginBottom: -40,
-		borderColor: 'lightgray',
+		borderColor: 'white',
 		borderWidth: 3,
 	},
 	userInfo: {

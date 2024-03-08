@@ -12,8 +12,9 @@ import { setUserData } from '@store/reducers/userSlice';
 import { setupStore } from '@store/store';
 import { AxiosError } from 'axios';
 import React, { useEffect } from 'react';
-import { Text } from 'react-native';
+import { Text,View } from 'react-native';
 import Toast from 'react-native-toast-message';
+import LoaderKit from 'react-native-loader-kit';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
@@ -82,7 +83,28 @@ const App = () => {
 const AppProvider = () => {
 	return (
 		<Provider store={store}>
-			<PersistGate loading={<Text>Loading ....</Text>} persistor={persistor}>
+			<PersistGate
+				loading={
+					<View
+						style={{
+							flex: 1,
+							alignSelf: 'stretch',
+							height: '100%',
+							backgroundColor: 'rgba(0,0,0,0.8)',
+							justifyContent: 'center',
+							display: 'flex',
+							alignItems: 'center',
+						}}
+					>
+						<LoaderKit
+							style={{ width: '50%', height: '50%', alignSelf: 'center' }}
+							name={'BallClipRotatePulse'}
+							color={'#9c080b'}
+						/>
+					</View>
+				}
+				persistor={persistor}
+			>
 				<App />
 			</PersistGate>
 		</Provider>

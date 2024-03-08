@@ -75,11 +75,11 @@ const LoginScreen: LoginScreen = ({ navigation }) => {
 				</Text>
 			</TouchableOpacity>
 			<TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-				<Text style={styles.loginButtonText}>Connexion</Text>
+				<Text style={styles.loginButtonText}>Connect</Text>
 			</TouchableOpacity>
 
 			<TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-				<Text style={styles.signupText}>Créer un compte</Text>
+				<Text style={styles.signupText}>I want to create an account</Text>
 			</TouchableOpacity>
 		</View>
 	);
@@ -91,10 +91,16 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		padding: 16,
-		backgroundColor: 'black',
+		backgroundColor: 'rgba(0,0,0,0.8)',
 	},
 	logoContainer: {
 		marginBottom: 20,
+	},
+	inputContainer: {
+		display: 'flex',
+		alignSelf: 'stretch',
+		flexDirection: 'column',
+		paddingBottom: 10,
 	},
 	logoWrapper: {
 		width: 100,
@@ -117,25 +123,32 @@ const styles = StyleSheet.create({
 		fontSize: 24,
 		fontWeight: 'bold',
 		marginBottom: 16,
-		color: 'white',
+		color: 'lightgray',
+	},
+	label: {
+		fontSize: 16,
+		fontWeight: 'bold',
+		marginVertical: 8,
+		color: 'gray',
+		alignSelf: 'flex-start',
 	},
 	input: {
 		height: 40,
-		width: '100%',
 		borderColor: 'gray',
+		color: 'lightgray',
 		borderWidth: 1,
-		marginBottom: 12,
-		paddingHorizontal: 8,
-		color: 'white',
+		borderRadius: 8,
+		padding: 8,
+		marginRight: 8,
+		width: '100%',
 	},
 	loginButton: {
-		backgroundColor: 'black',
+		marginTop: 30,
+		backgroundColor: '#9c080b',
 		borderRadius: 10,
 		paddingVertical: 12,
 		paddingHorizontal: 24,
 		marginBottom: 12,
-		borderColor: 'white',
-		borderWidth: 2,
 	},
 	loginButtonText: {
 		color: 'white',
@@ -145,7 +158,7 @@ const styles = StyleSheet.create({
 	},
 	signupText: {
 		marginTop: 16,
-		color: 'white',
+		color: 'lightgray',
 		textAlign: 'center',
 	},
 });
