@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/Maghwyn/meme-rn-app/compare/v1.0.0...v1.0.1) (2024-03-09)
+
+
+### Bug Fixes
+
+* **readme:** Remove the npm commands ([d052e74](https://github.com/Maghwyn/meme-rn-app/commit/d052e746ae622bf39be460f0d0292de6d0257387))
+
 # 1.0.0 (2024-03-09)
 
 
